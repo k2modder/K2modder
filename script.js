@@ -4,7 +4,7 @@ const apps = [
     cat: "App",
     version: "V1.0.0",
     size: "278 MB",
-    icon: '<img src="images.jpeg" alt="CapCut Pro icon">',
+    icon: '<img src="images.jpeg" alt="CapCut Pro icon" style="width:62px;height:62px;object-fit:cover;border-radius:15px;">',
     download: "https://github.com/k2modder/K2modder/releases/download/V1.0.0/CapCut.v28.0.0.ULT.A.apk"
   },
   {
