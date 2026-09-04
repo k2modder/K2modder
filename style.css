@@ -318,3 +318,26 @@ footer strong{
     padding:25px;
   }
 }
+/* MOBILE NAVIGATION FIX */
+
+@media (max-width: 650px){
+
+  .nav-container{
+    padding:15px 16px;
+    gap:12px;
+  }
+
+  nav{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:8px 14px;
+  }
+
+  nav a{
+    font-size:12px;
+    padding:5px 0;
+  }
+
+}
