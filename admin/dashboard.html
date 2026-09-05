@@ -3,14 +3,45 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+
   <title>K2MODDER Admin Dashboard</title>
+
   <link rel="stylesheet" href="../style.css">
+
+  <style>
+    .admin-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .admin-btn {
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 10px;
+      background: #5b8cff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .admin-btn.logout {
+      background: #333d50;
+    }
+
+    #status {
+      margin-top: 15px;
+      color: #9aa7bd;
+    }
+  </style>
 </head>
 
 <body>
 
 <header class="site-header">
   <div class="nav-container">
+
     <a href="../index.html" class="logo">
       K2<span>MODDER</span>
     </a>
@@ -19,54 +50,113 @@
       <a href="../index.html">Home</a>
       <a href="#" onclick="logout(); return false;">Logout</a>
     </nav>
+
   </div>
 </header>
 
 <main class="info-page">
+
   <div class="info-box">
+
     <span class="small-title">ADMIN PANEL</span>
 
     <h1>Welcome to K2MODDER</h1>
 
-    <p>You are successfully logged in.</p>
+    <p>You are successfully logged in as an admin.</p>
 
-    <button onclick="logout()">Logout</button>
+    <div class="admin-actions">
+
+      <button
+        class="admin-btn"
+        onclick="alert('Add App feature coming next.')">
+        Add App
+      </button>
+
+      <button
+        class="admin-btn logout"
+        onclick="logout()">
+        Logout
+      </button>
+
+    </div>
+
+    <p id="status"></p>
+
   </div>
+
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+
 const SUPABASE_URL =
   "https://mcjsihyrkzrkvkufvkif.supabase.co";
 
 const SUPABASE_KEY =
   "sb_publishable_rJ3XzXGztJJcf5c_wUG9FA_lZAsqlvf";
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
 
 async function checkLogin() {
 
-  const { data, error } =
-    await supabaseClient.auth.getSession();
+  const {
+    data,
+    error
+  } = await supabaseClient.auth.getSession();
 
   if (error || !data.session) {
+
     window.location.href = "index.html";
     return;
+
   }
+
+  const user = data.session.user;
+
+  const {
+    data: admin,
+    error: adminError
+  } = await supabaseClient
+    .from("admin_users")
+    .select("user_id")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (adminError || !admin) {
+
+    await supabaseClient.auth.signOut();
+
+    alert("Access denied. Admin only.");
+
+    window.location.href = "index.html";
+
+    return;
+
+  }
+
+  document.getElementById("status").textContent =
+    "Admin verification successful.";
+
 }
+
 
 async function logout() {
 
   await supabaseClient.auth.signOut();
 
   window.location.href = "index.html";
+
 }
 
+
 checkLogin();
+
 </script>
 
 </body>
