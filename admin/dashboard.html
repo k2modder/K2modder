@@ -11,10 +11,13 @@
 
 <header class="site-header">
   <div class="nav-container">
-    <a href="../index.html" class="logo">K2<span>MODDER</span></a>
+    <a href="../index.html" class="logo">
+      K2<span>MODDER</span>
+    </a>
+
     <nav>
       <a href="../index.html">Home</a>
-      <a href="#" onclick="logout()">Logout</a>
+      <a href="#" onclick="logout(); return false;">Logout</a>
     </nav>
   </div>
 </header>
@@ -22,7 +25,9 @@
 <main class="info-page">
   <div class="info-box">
     <span class="small-title">ADMIN PANEL</span>
+
     <h1>Welcome to K2MODDER</h1>
+
     <p>You are successfully logged in.</p>
 
     <button onclick="logout()">Logout</button>
@@ -32,18 +37,36 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-const SUPABASE_URL = "https://mcjsihyrkzrkvkufvkif.supabase.co";
-const SUPABASE_KEY = "sb_publishable_rJ3XzXGztJJcf5c_wUG9FA_lZAsqlvf";
+const SUPABASE_URL =
+  "https://mcjsihyrkzrkvkufvkif.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_rJ3XzXGztJJcf5c_wUG9FA_lZAsqlvf";
 
 const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
 
+async function checkLogin() {
+
+  const { data, error } =
+    await supabaseClient.auth.getSession();
+
+  if (error || !data.session) {
+    window.location.href = "index.html";
+    return;
+  }
+}
+
 async function logout() {
+
   await supabaseClient.auth.signOut();
+
   window.location.href = "index.html";
 }
+
+checkLogin();
 </script>
 
 </body>
