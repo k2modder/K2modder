@@ -1,89 +1,200 @@
-const apps = [
-  {
-    name: "CapCut Pro",
-    cat: "App",
-    version: "1.0.0",
-    size: "278 MB",
-    icon: '<img src="images.jpeg" alt="CapCut Pro icon">',
-    download: "https://github.com/k2modder/K2modder/releases/download/V1.0.0/CapCut.v28.0.0.ULT.A.apk"
-  },
-  {
-    name: "K2 Game",
-    cat: "Game",
-    version: "2.1",
-    size: "85 MB",
-    icon: "🎮",
-    download: "#"
-  },
-  {
-    name: "K2 Tools",
-    cat: "Tools",
-    version: "1.4",
-    size: "8 MB",
-    icon: "🛠️",
-    download: "#"
-  }
-];
+const SUPABASE_URL =
+  "https://mcjsihyrkzrkvkufvkif.supabase.co";
 
-function render(list = apps) {
-  const grid = document.getElementById("grid");
+/*
+  यहाँ वही Supabase PUBLISHABLE KEY डालो
+  जो तुमने admin/dashboard.html में इस्तेमाल की है।
+
+  Service-role / secret key मत डालना।
+*/
+const SUPABASE_KEY =
+  "sb_publishable_rJ3XzXGztJJcf5c_wUG9FA_lZAsqlvf";
+
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+const grid = document.getElementById("grid");
+const search = document.getElementById("search");
+
+
+function escapeHtml(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+
+function renderApps(apps) {
 
   if (!grid) return;
 
-  if (list.length === 0) {
+
+  if (!apps || apps.length === 0) {
+
     grid.innerHTML = `
       <div class="info-box">
         <h3>No apps found</h3>
         <p>Try searching with a different name.</p>
       </div>
     `;
+
     return;
   }
 
-  grid.innerHTML = list.map(app => `
-    <article class="card">
 
-      <div class="icon">
-        ${app.icon}
-      </div>
+  grid.innerHTML = apps.map(function(app) {
 
-      <div class="info">
-        <h3>${app.name}</h3>
-        <p>${app.cat} • v${app.version} • ${app.size}</p>
-      </div>
+    const icon = app.icon_url
+      ? `
+        <img
+          src="${escapeHtml(app.icon_url)}"
+          alt="${escapeHtml(app.name)}"
+          loading="lazy">
+      `
+      : "📱";
 
-      ${
-        app.download !== "#"
-          ? `<a class="download"
-                href="${app.download}"
-                target="_blank"
-                rel="noopener noreferrer">
-                Download APK
-             </a>`
-          : `<a class="download"
-                href="#"
-                onclick="return false;">
-                Coming Soon
-             </a>`
-      }
 
-    </article>
-  `).join("");
+    const downloadButton = app.download_url
+      ? `
+        <a
+          class="download"
+          href="${escapeHtml(app.download_url)}"
+          target="_blank"
+          rel="noopener noreferrer">
+          Download
+        </a>
+      `
+      : `
+        <span class="download">
+          Coming Soon
+        </span>
+      `;
+
+
+    return `
+      <article class="card">
+
+        <div class="icon">
+          ${icon}
+        </div>
+
+        <div class="info">
+
+          <h3>
+            ${escapeHtml(app.name)}
+          </h3>
+
+          <p>
+            ${escapeHtml(app.category)}
+            • v${escapeHtml(app.version)}
+            • ${escapeHtml(app.size)}
+          </p>
+
+        </div>
+
+        ${downloadButton}
+
+      </article>
+    `;
+
+  }).join("");
 }
+
+
+
+async function loadApps() {
+
+  if (!grid) return;
+
+
+  grid.innerHTML = `
+    <div class="info-box">
+      <h3>Loading apps...</h3>
+      <p>Please wait.</p>
+    </div>
+  `;
+
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("apps")
+    .select("*")
+    .order("created_at", {
+      ascending: false
+    });
+
+
+  if (error) {
+
+    console.error(error);
+
+    grid.innerHTML = `
+      <div class="info-box">
+        <h3>Unable to load apps</h3>
+        <p>Please try again later.</p>
+      </div>
+    `;
+
+    return;
+  }
+
+
+  window.allApps = data || [];
+
+  renderApps(window.allApps);
+}
+
+
 
 function filterApps() {
-  const search = document.getElementById("search");
 
-  if (!search) return;
+  const query =
+    search
+      ? search.value.trim().toLowerCase()
+      : "";
 
-  const query = search.value.trim().toLowerCase();
 
-  const filtered = apps.filter(app =>
-    app.name.toLowerCase().includes(query) ||
-    app.cat.toLowerCase().includes(query)
-  );
+  const filtered =
+    (window.allApps || []).filter(function(app) {
 
-  render(filtered);
+      return (
+        String(app.name || "")
+          .toLowerCase()
+          .includes(query)
+
+        ||
+
+        String(app.category || "")
+          .toLowerCase()
+          .includes(query)
+      );
+
+    });
+
+
+  renderApps(filtered);
 }
 
-render();
+
+
+if (search) {
+
+  search.addEventListener(
+    "input",
+    filterApps
+  );
+
+}
+
+
+loadApps();
