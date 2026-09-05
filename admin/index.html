@@ -1,108 +1,329 @@
-8<!doctype html>
+<!doctype html>
 <html lang="en">
+
 <head>
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
   <title>K2MODDER Admin Login</title>
 
+  <link rel="icon" href="../favicon.png">
   <link rel="stylesheet" href="../style.css">
 
   <style>
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      min-height:100vh;
+    }
+
     .login-page{
       min-height:100vh;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:20px;
+      padding:25px 16px;
+
+      background:
+        radial-gradient(
+          circle at 50% 0%,
+          rgba(91,140,255,.18),
+          transparent 45%
+        );
     }
 
     .login-box{
       width:100%;
-      max-width:420px;
-      background:#111a2b;
-      border:1px solid rgba(255,255,255,.09);
-      border-radius:20px;
-      padding:30px;
-      box-shadow:0 20px 60px rgba(0,0,0,.35);
+      max-width:430px;
+
+      padding:32px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.08),
+          rgba(255,255,255,.025)
+        );
+
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:26px;
+
+      box-shadow:
+        0 25px 70px rgba(0,0,0,.4);
+
+      backdrop-filter:blur(15px);
     }
 
-    .login-box h1{
-      margin:0 0 8px;
+    .login-logo{
+      text-align:center;
+      margin-bottom:28px;
+    }
+
+    .login-logo a{
+      font-size:28px;
+      font-weight:900;
+      letter-spacing:-1px;
       color:#fff;
     }
 
-    .login-box p{
+    .login-logo span{
+      color:#5b8cff;
+    }
+
+    .small-title{
+      text-align:center;
+      margin-bottom:10px;
+    }
+
+    .login-box h1{
+      margin:0 0 10px;
+      text-align:center;
+      color:#fff;
+      font-size:32px;
+    }
+
+    .login-description{
+      text-align:center;
       color:#9aa7bd;
-      margin-bottom:25px;
+      line-height:1.6;
+      margin:0 0 28px;
+    }
+
+    .field{
+      margin-bottom:16px;
+    }
+
+    .field label{
+      display:block;
+      margin-bottom:7px;
+      color:#cbd5e1;
+      font-size:13px;
+      font-weight:bold;
     }
 
     .login-box input{
       width:100%;
-      padding:14px;
-      margin-bottom:14px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.12);
+      padding:15px 16px;
+
+      border-radius:13px;
+      border:1px solid rgba(255,255,255,.1);
+
       background:#0b1220;
       color:#fff;
+
       outline:none;
+      font-size:15px;
+
+      transition:.2s ease;
     }
 
-    .login-box button{
+    .login-box input:focus{
+      border-color:rgba(91,140,255,.7);
+
+      box-shadow:
+        0 0 0 3px rgba(91,140,255,.12);
+    }
+
+    .login-box input::placeholder{
+      color:#66738a;
+    }
+
+    .login-button{
       width:100%;
-      padding:14px;
+      margin-top:5px;
+
+      padding:15px;
+
       border:0;
-      border-radius:12px;
-      background:#5b8cff;
-      color:white;
+      border-radius:13px;
+
+      background:
+        linear-gradient(
+          90deg,
+          #5b8cff,
+          #805cff
+        );
+
+      color:#fff;
+      font-size:15px;
       font-weight:bold;
+
       cursor:pointer;
+
+      transition:.2s ease;
+    }
+
+    .login-button:hover{
+      filter:brightness(1.1);
+      transform:translateY(-1px);
+    }
+
+    .login-button:disabled{
+      opacity:.6;
+      cursor:not-allowed;
+      transform:none;
     }
 
     #message{
-      margin-top:15px;
+      min-height:22px;
+      margin-top:16px;
+
+      text-align:center;
+
       color:#ff9b9b;
+      font-size:14px;
+      line-height:1.5;
     }
+
+    .back-home{
+      display:block;
+      text-align:center;
+
+      margin-top:22px;
+
+      color:#9aa7bd;
+      font-size:13px;
+    }
+
+    .back-home:hover{
+      color:#fff;
+    }
+
+    @media(max-width:500px){
+
+      .login-page{
+        padding:20px 14px;
+      }
+
+      .login-box{
+        padding:25px 20px;
+        border-radius:22px;
+      }
+
+      .login-box h1{
+        font-size:28px;
+      }
+
+      .login-logo a{
+        font-size:25px;
+      }
+
+    }
+
   </style>
+
 </head>
+
 
 <body>
 
   <main class="login-page">
+
     <div class="login-box">
 
-      <h1>K2MODDER Admin</h1>
-      <p>Sign in to access the admin panel.</p>
+      <div class="login-logo">
+        <a href="../index.html">
+          K2<span>MODDER</span>
+        </a>
+      </div>
 
-      <input
-        id="email"
-        type="email"
-        placeholder="Email address"
-        autocomplete="email"
-      >
+      <span class="small-title">
+        ADMIN PANEL
+      </span>
 
-      <input
-        id="password"
-        type="password"
-        placeholder="Password"
-        autocomplete="current-password"
-      >
+      <h1>Welcome Back</h1>
 
-      <button onclick="login()">Login</button>
+      <p class="login-description">
+        Sign in to manage apps and games.
+      </p>
+
+
+      <form id="loginForm">
+
+        <div class="field">
+
+          <label for="email">
+            Email Address
+          </label>
+
+          <input
+            id="email"
+            type="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            required>
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="password">
+            Password
+          </label>
+
+          <input
+            id="password"
+            type="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required>
+
+        </div>
+
+
+        <button
+          class="login-button"
+          id="loginButton"
+          type="submit">
+
+          Login
+
+        </button>
+
+      </form>
+
 
       <div id="message"></div>
 
+
+      <a
+        class="back-home"
+        href="../index.html">
+
+        ← Back to K2MODDER
+
+      </a>
+
     </div>
+
   </main>
+
+
+  <!-- Supabase -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
   <script>
+
     const SUPABASE_URL =
       "https://mcjsihyrkzrkvkufvkif.supabase.co";
 
+
+    /*
+      Supabase PUBLISHABLE KEY
+
+      Service-role / secret key कभी मत डालना।
+    */
+
     const SUPABASE_KEY =
       "sb_publishable_rJ3XzXGztJJcf5c_wUG9FA_lZAsqlvf";
+
 
     const supabaseClient =
       window.supabase.createClient(
@@ -110,63 +331,157 @@
         SUPABASE_KEY
       );
 
+
+    const loginForm =
+      document.getElementById("loginForm");
+
+    const loginButton =
+      document.getElementById("loginButton");
+
+    const message =
+      document.getElementById("message");
+
+
     async function login() {
+
       const email =
-        document.getElementById("email").value.trim();
+        document
+          .getElementById("email")
+          .value
+          .trim();
+
 
       const password =
-        document.getElementById("password").value;
+        document
+          .getElementById("password")
+          .value;
 
-      const message =
-        document.getElementById("message");
 
       message.textContent = "";
 
-      if (!email || !password) {
+
+      if(!email || !password){
+
         message.textContent =
           "Email and password required.";
+
         return;
+
       }
 
-      const { error } =
-        await supabaseClient.auth.signInWithPassword({
-          email,
-          password
-        });
 
-      if (error) {
-        message.textContent = error.message;
-        return;
-      }
+      loginButton.disabled = true;
+      loginButton.textContent = "Signing in...";
+
 
       const {
-        data: { user }
-      } = await supabaseClient.auth.getUser();
+        error
+      } =
+        await supabaseClient.auth.signInWithPassword({
 
-      if (!user) {
-        message.textContent = "Login verification failed.";
-        await supabaseClient.auth.signOut();
+          email: email,
+
+          password: password
+
+        });
+
+
+      if(error){
+
+        message.textContent =
+          error.message;
+
+        loginButton.disabled = false;
+        loginButton.textContent = "Login";
+
         return;
+
       }
 
-      const { data: adminUser, error: adminError } =
+
+      const {
+        data: {
+          user
+        }
+      } =
+        await supabaseClient.auth.getUser();
+
+
+      if(!user){
+
+        message.textContent =
+          "Login verification failed.";
+
+        await supabaseClient.auth.signOut();
+
+        loginButton.disabled = false;
+        loginButton.textContent = "Login";
+
+        return;
+
+      }
+
+
+      /*
+        Check whether the logged-in user
+        exists inside admin_users.
+      */
+
+      const {
+        data: adminUser,
+        error: adminError
+      } =
         await supabaseClient
           .from("admin_users")
           .select("user_id")
           .eq("user_id", user.id)
           .maybeSingle();
 
-      if (adminError || !adminUser) {
+
+      if(adminError || !adminUser){
+
         message.textContent =
           "You are not authorized as an admin.";
 
         await supabaseClient.auth.signOut();
+
+        loginButton.disabled = false;
+        loginButton.textContent = "Login";
+
         return;
+
       }
 
-      window.location.href = "dashboard.html";
+
+      message.style.color = "#8fb3ff";
+
+      message.textContent =
+        "Login successful. Opening dashboard...";
+
+
+      setTimeout(function(){
+
+        window.location.href =
+          "dashboard.html";
+
+      }, 500);
+
     }
+
+
+    loginForm.addEventListener(
+      "submit",
+      function(event){
+
+        event.preventDefault();
+
+        login();
+
+      }
+    );
+
   </script>
 
 </body>
+
 </html>
