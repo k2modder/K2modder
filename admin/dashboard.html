@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>K2MODDER Admin Dashboard</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="nav-container">
+    <a href="../index.html" class="logo">K2<span>MODDER</span></a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main class="info-page">
+  <div class="info-box">
+    <span class="small-title">ADMIN PANEL</span>
+    <h1>Welcome to K2MODDER</h1>
+    <p>You are successfully logged in.</p>
+
+    <button onclick="logout()">Logout</button>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+const SUPABASE_KEY = "sb_publishable_rJ3XzXGztJJcf5c_wUG9FA_lZAsqlvf";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+async function logout() {
+  await supabaseClient.auth.signOut();
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>
