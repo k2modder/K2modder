@@ -9,15 +9,44 @@
   <link rel="stylesheet" href="../style.css">
 
   <style>
-    .admin-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 20px;
+    .admin-wrap {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .admin-box {
+      background: #111827;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 25px;
+    }
+
+    .admin-box h2 {
+      color: white;
+      margin-top: 0;
+    }
+
+    .admin-form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .admin-form input,
+    .admin-form select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: #0b1220;
+      color: white;
+      outline: none;
     }
 
     .admin-btn {
-      padding: 12px 18px;
+      padding: 13px 20px;
       border: 0;
       border-radius: 10px;
       background: #5b8cff;
@@ -26,13 +55,30 @@
       cursor: pointer;
     }
 
-    .admin-btn.logout {
-      background: #333d50;
+    .logout-btn {
+      background: #374151;
     }
 
-    #status {
-      margin-top: 15px;
-      color: #9aa7bd;
+    .app-item {
+      padding: 16px;
+      margin-top: 12px;
+      border-radius: 12px;
+      background: #0b1220;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .app-item strong {
+      color: white;
+    }
+
+    .app-item p {
+      color: #9ca8bd;
+      margin: 6px 0;
+    }
+
+    #message {
+      margin-top: 12px;
+      color: #9ca8bd;
     }
   </style>
 </head>
@@ -54,9 +100,12 @@
   </div>
 </header>
 
-<main class="info-page">
 
-  <div class="info-box">
+<main class="admin-wrap">
+
+  <!-- ADMIN DASHBOARD -->
+
+  <div class="admin-box">
 
     <span class="small-title">ADMIN PANEL</span>
 
@@ -64,79 +113,122 @@
 
     <p>You are successfully logged in as an admin.</p>
 
-    <div class="admin-actions">
+    <button
+      class="admin-btn logout-btn"
+      onclick="logout()">
+      Logout
+    </button>
+
+    <p id="status">Checking admin access...</p>
+
+  </div>
+
+
+  <!-- ADD APP -->
+
+  <div class="admin-box">
+
+    <h2>Add New App</h2>
+
+    <form
+      class="admin-form"
+      id="addAppForm">
+
+      <input
+        id="appName"
+        type="text"
+        placeholder="App Name"
+        required>
+
+      <select
+        id="appCategory"
+        required>
+
+        <option value="">Select Category</option>
+        <option value="App">App</option>
+        <option value="Game">Game</option>
+        <option value="Tools">Tools</option>
+
+      </select>
+
+      <input
+        id="appVersion"
+        type="text"
+        placeholder="Version e.g. 1.0.0"
+        required>
+
+      <input
+        id="appSize"
+        type="text"
+        placeholder="Size e.g. 100 MB"
+        required>
+
+      <input
+        id="iconUrl"
+        type="url"
+        placeholder="Icon URL"
+        required>
+
+      <input
+        id="downloadUrl"
+        type="url"
+        placeholder="Download URL"
+        required>
 
       <button
         class="admin-btn"
-        onclick="showAddApp() {
-  const name = prompt("App Name:");
-  if (!name) return;
-
-  const category = prompt("Category (App/Game/Tools):");
-  if (!category) return;
-
-  const version = prompt("Version:");
-  if (!version) return;
-
-  const size = prompt("Size (example: 100 MB):");
-  if (!size) return;
-
-  const icon_url = prompt("Icon URL:");
-  if (!icon_url) return;
-
-  const download_url = prompt("Download URL:");
-  if (!download_url) return;
-
-  const { error } = await supabaseClient
-    .from("apps")
-    .insert({
-      name: name,
-      category: category,
-      version: version,
-      size: size,
-      icon_url: icon_url,
-      download_url: download_url
-    });
-
-  if (error) {
-    alert("Error: " + error.message);
-    return;
-  }
-
-  alert("App added successfully!");
-}()"
-        Add App
+        type="submit">
+        Save App
       </button>
 
-      <button
-        class="admin-btn logout"
-        onclick="logout()">
-        Logout
-      </button>
+    </form>
 
+    <p id="message"></p>
+
+  </div>
+
+
+  <!-- APP LIST -->
+
+  <div class="admin-box">
+
+    <h2>Saved Apps</h2>
+
+    <div id="appList">
+      Loading apps...
     </div>
-
-    <p id="status"></p>
 
   </div>
 
 </main>
 
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
 <script>
 
 const SUPABASE_URL =
   "https://mcjsihyrkzrkvkufvkif.supabase.co";
 
+
+/*
+  IMPORTANT:
+  नीचे YOUR_PUBLISHABLE_KEY को अपनी
+  existing Supabase publishable key से replace करो.
+  Service-role / secret key कभी मत डालना.
+*/
+
 const SUPABASE_KEY =
-  "sb_publishable_rJ3XzXGztJJcf5c_wUG9FA_lZAsqlvf";
+  "YOUR_PUBLISHABLE_KEY";
+
 
 const supabaseClient =
   window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
   );
+
 
 
 async function checkLogin() {
@@ -146,23 +238,30 @@ async function checkLogin() {
     error
   } = await supabaseClient.auth.getSession();
 
+
   if (error || !data.session) {
 
     window.location.href = "index.html";
+
     return;
 
   }
 
-  const user = data.session.user;
+
+  const user =
+    data.session.user;
+
 
   const {
     data: admin,
     error: adminError
-  } = await supabaseClient
-    .from("admin_users")
-    .select("user_id")
-    .eq("user_id", user.id)
-    .maybeSingle();
+  } =
+    await supabaseClient
+      .from("admin_users")
+      .select("user_id")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
 
   if (adminError || !admin) {
 
@@ -176,43 +275,175 @@ async function checkLogin() {
 
   }
 
+
   document.getElementById("status").textContent =
     "Admin verification successful.";
 
+
+  loadApps();
+
 }
 
-function showAddApp() {
-  const name = prompt("App Name:");
-  if (!name) return;
 
-  const category = prompt("Category (App/Game/Tools):");
-  if (!category) return;
 
-  const version = prompt("Version:");
-  if (!version) return;
-
-  const size = prompt("Size (example: 100 MB):");
-  if (!size) return;
-
-  const icon_url = prompt("Icon URL:");
-  if (!icon_url) return;
-
-  const download_url = prompt("Download URL:");
-  if (!download_url) return;
-
-  alert(
-    "App details received!\n\n" +
-    "Name: " + name + "\n" +
-    "Category: " + category + "\n" +
-    "Version: " + version + "\n" +
-    "Size: " + size
-  );
-}
 async function logout() {
 
   await supabaseClient.auth.signOut();
 
   window.location.href = "index.html";
+
+}
+
+
+
+document
+  .getElementById("addAppForm")
+  .addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+
+    const message =
+      document.getElementById("message");
+
+
+    message.textContent =
+      "Saving app...";
+
+
+    const name =
+      document.getElementById("appName").value.trim();
+
+
+    const category =
+      document.getElementById("appCategory").value;
+
+
+    const version =
+      document.getElementById("appVersion").value.trim();
+
+
+    const size =
+      document.getElementById("appSize").value.trim();
+
+
+    const icon_url =
+      document.getElementById("iconUrl").value.trim();
+
+
+    const download_url =
+      document.getElementById("downloadUrl").value.trim();
+
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("apps")
+        .insert({
+          name: name,
+          category: category,
+          version: version,
+          size: size,
+          icon_url: icon_url,
+          download_url: download_url
+        });
+
+
+    if (error) {
+
+      message.textContent =
+        "Error: " + error.message;
+
+      return;
+
+    }
+
+
+    message.textContent =
+      "App added successfully!";
+
+
+    document
+      .getElementById("addAppForm")
+      .reset();
+
+
+    loadApps();
+
+  });
+
+
+
+async function loadApps() {
+
+  const appList =
+    document.getElementById("appList");
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("apps")
+      .select("*")
+      .order("created_at", {
+        ascending: false
+      });
+
+
+  if (error) {
+
+    appList.innerHTML =
+      "<p>Unable to load apps.</p>";
+
+    return;
+
+  }
+
+
+  if (!data || data.length === 0) {
+
+    appList.innerHTML =
+      "<p>No apps added yet.</p>";
+
+    return;
+
+  }
+
+
+  appList.innerHTML =
+    data.map(function(app) {
+
+      return `
+        <div class="app-item">
+
+          <strong>${escapeHtml(app.name)}</strong>
+
+          <p>
+            ${escapeHtml(app.category)}
+            • v${escapeHtml(app.version || "")}
+            • ${escapeHtml(app.size || "")}
+          </p>
+
+        </div>
+      `;
+
+    }).join("");
+
+}
+
+
+
+function escapeHtml(value) {
+
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 
 }
 
