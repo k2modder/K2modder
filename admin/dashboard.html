@@ -10,7 +10,7 @@
 
   <style>
     .admin-wrap {
-      max-width: 900px;
+      max-width: 950px;
       margin: 40px auto;
       padding: 20px;
     }
@@ -23,8 +23,9 @@
       margin-bottom: 25px;
     }
 
+    .admin-box h1,
     .admin-box h2 {
-      color: white;
+      color: #fff;
       margin-top: 0;
     }
 
@@ -41,7 +42,7 @@
       border-radius: 10px;
       border: 1px solid rgba(255,255,255,.12);
       background: #0b1220;
-      color: white;
+      color: #fff;
       outline: none;
     }
 
@@ -50,35 +51,93 @@
       border: 0;
       border-radius: 10px;
       background: #5b8cff;
-      color: white;
+      color: #fff;
       font-weight: bold;
       cursor: pointer;
+    }
+
+    .admin-btn:hover {
+      opacity: .9;
     }
 
     .logout-btn {
       background: #374151;
     }
 
+    .edit-btn {
+      background: #2563eb;
+    }
+
+    .delete-btn {
+      background: #dc2626;
+    }
+
+    .cancel-btn {
+      background: #4b5563;
+    }
+
     .app-item {
-      padding: 16px;
-      margin-top: 12px;
-      border-radius: 12px;
+      padding: 18px;
+      margin-top: 14px;
+      border-radius: 14px;
       background: #0b1220;
       border: 1px solid rgba(255,255,255,.08);
     }
 
-    .app-item strong {
-      color: white;
+    .app-row {
+      display: flex;
+      align-items: center;
+      gap: 15px;
     }
 
-    .app-item p {
+    .app-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 14px;
+      object-fit: cover;
+      background: #1f2937;
+      flex-shrink: 0;
+    }
+
+    .app-details {
+      flex: 1;
+    }
+
+    .app-details strong {
+      color: #fff;
+      font-size: 18px;
+    }
+
+    .app-details p {
       color: #9ca8bd;
-      margin: 6px 0;
+      margin: 6px 0 0;
+    }
+
+    .app-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      flex-wrap: wrap;
     }
 
     #message {
-      margin-top: 12px;
+      margin-top: 14px;
       color: #9ca8bd;
+    }
+
+    @media (max-width: 600px) {
+      .admin-wrap {
+        padding: 12px;
+        margin-top: 20px;
+      }
+
+      .admin-box {
+        padding: 18px;
+      }
+
+      .app-row {
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
@@ -103,15 +162,15 @@
 
 <main class="admin-wrap">
 
-  <!-- ADMIN DASHBOARD -->
+  <!-- ADMIN -->
 
   <div class="admin-box">
 
     <span class="small-title">ADMIN PANEL</span>
 
-    <h1>Welcome to K2MODDER</h1>
+    <h1>K2MODDER Dashboard</h1>
 
-    <p>You are successfully logged in as an admin.</p>
+    <p>You are logged in as an administrator.</p>
 
     <button
       class="admin-btn logout-btn"
@@ -124,15 +183,15 @@
   </div>
 
 
-  <!-- ADD APP -->
+  <!-- ADD / EDIT APP -->
 
   <div class="admin-box">
 
-    <h2>Add New App</h2>
+    <h2 id="formTitle">Add New App</h2>
 
     <form
       class="admin-form"
-      id="addAppForm">
+      id="appForm">
 
       <input
         id="appName"
@@ -177,8 +236,18 @@
 
       <button
         class="admin-btn"
+        id="saveButton"
         type="submit">
         Save App
+      </button>
+
+      <button
+        class="admin-btn cancel-btn"
+        id="cancelEdit"
+        type="button"
+        onclick="cancelEdit()"
+        style="display:none;">
+        Cancel Edit
       </button>
 
     </form>
@@ -205,7 +274,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
 <script>
 
 const SUPABASE_URL =
@@ -213,14 +281,15 @@ const SUPABASE_URL =
 
 
 /*
-  IMPORTANT:
-  नीचे YOUR_PUBLISHABLE_KEY को अपनी
-  existing Supabase publishable key से replace करो.
-  Service-role / secret key कभी मत डालना.
+  अपनी existing Supabase PUBLISHABLE KEY
+  यहाँ रखो।
+
+  sb_publishable_... वाली key इस्तेमाल करो।
+  Service Role / Secret key मत डालना।
 */
 
 const SUPABASE_KEY =
-  "sb_publishable_rJ3XzXGztJJcf5c_wUG9FA_lZAsqlvf";
+  "YOUR_EXISTING_PUBLISHABLE_KEY";
 
 
 const supabaseClient =
@@ -230,6 +299,10 @@ const supabaseClient =
   );
 
 
+let editingId = null;
+
+
+/* ADMIN LOGIN CHECK */
 
 async function checkLogin() {
 
@@ -285,6 +358,7 @@ async function checkLogin() {
 }
 
 
+/* LOGOUT */
 
 async function logout() {
 
@@ -295,9 +369,10 @@ async function logout() {
 }
 
 
+/* ADD / UPDATE APP */
 
 document
-  .getElementById("addAppForm")
+  .getElementById("appForm")
   .addEventListener("submit", async function(event) {
 
     event.preventDefault();
@@ -306,48 +381,62 @@ document
     const message =
       document.getElementById("message");
 
-
     message.textContent =
-      "Saving app...";
+      "Saving...";
 
 
-    const name =
-      document.getElementById("appName").value.trim();
+    const appData = {
+
+      name:
+        document.getElementById("appName")
+          .value.trim(),
+
+      category:
+        document.getElementById("appCategory")
+          .value,
+
+      version:
+        document.getElementById("appVersion")
+          .value.trim(),
+
+      size:
+        document.getElementById("appSize")
+          .value.trim(),
+
+      icon_url:
+        document.getElementById("iconUrl")
+          .value.trim(),
+
+      download_url:
+        document.getElementById("downloadUrl")
+          .value.trim()
+
+    };
 
 
-    const category =
-      document.getElementById("appCategory").value;
+    let error;
 
 
-    const version =
-      document.getElementById("appVersion").value.trim();
+    if (editingId) {
 
+      const result =
+        await supabaseClient
+          .from("apps")
+          .update(appData)
+          .eq("id", editingId);
 
-    const size =
-      document.getElementById("appSize").value.trim();
+      error = result.error;
 
+    } else {
 
-    const icon_url =
-      document.getElementById("iconUrl").value.trim();
+      const result =
+        await supabaseClient
+          .from("apps")
+          .insert(appData);
 
+      error = result.error;
 
-    const download_url =
-      document.getElementById("downloadUrl").value.trim();
-
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from("apps")
-        .insert({
-          name: name,
-          category: category,
-          version: version,
-          size: size,
-          icon_url: icon_url,
-          download_url: download_url
-        });
+    }
 
 
     if (error) {
@@ -361,12 +450,29 @@ document
 
 
     message.textContent =
-      "App added successfully!";
+      editingId
+        ? "App updated successfully!"
+        : "App added successfully!";
 
 
     document
-      .getElementById("addAppForm")
+      .getElementById("appForm")
       .reset();
+
+
+    editingId = null;
+
+
+    document.getElementById("formTitle")
+      .textContent = "Add New App";
+
+
+    document.getElementById("saveButton")
+      .textContent = "Save App";
+
+
+    document.getElementById("cancelEdit")
+      .style.display = "none";
 
 
     loadApps();
@@ -374,11 +480,16 @@ document
   });
 
 
+/* LOAD APPS */
 
 async function loadApps() {
 
   const appList =
     document.getElementById("appList");
+
+
+  appList.innerHTML =
+    "Loading apps...";
 
 
   const {
@@ -416,18 +527,62 @@ async function loadApps() {
   appList.innerHTML =
     data.map(function(app) {
 
+      const icon =
+        app.icon_url
+          ? `
+            <img
+              class="app-icon"
+              src="${escapeHtml(app.icon_url)}"
+              alt="${escapeHtml(app.name)}">
+          `
+          : `
+            <div class="app-icon"></div>
+          `;
+
+
       return `
+
         <div class="app-item">
 
-          <strong>${escapeHtml(app.name)}</strong>
+          <div class="app-row">
 
-          <p>
-            ${escapeHtml(app.category)}
-            • v${escapeHtml(app.version || "")}
-            • ${escapeHtml(app.size || "")}
-          </p>
+            ${icon}
+
+            <div class="app-details">
+
+              <strong>
+                ${escapeHtml(app.name)}
+              </strong>
+
+              <p>
+                ${escapeHtml(app.category)}
+                • v${escapeHtml(app.version || "")}
+                • ${escapeHtml(app.size || "")}
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="app-actions">
+
+            <button
+              class="admin-btn edit-btn"
+              onclick="editApp(${app.id})">
+              Edit
+            </button>
+
+            <button
+              class="admin-btn delete-btn"
+              onclick="deleteApp(${app.id})">
+              Delete
+            </button>
+
+          </div>
 
         </div>
+
       `;
 
     }).join("");
@@ -435,18 +590,171 @@ async function loadApps() {
 }
 
 
+/* EDIT APP */
+
+async function editApp(id) {
+
+  const {
+    data: app,
+    error
+  } =
+    await supabaseClient
+      .from("apps")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+
+  if (error || !app) {
+
+    alert("Unable to load app.");
+
+    return;
+
+  }
+
+
+  editingId = id;
+
+
+  document.getElementById("appName")
+    .value = app.name || "";
+
+
+  document.getElementById("appCategory")
+    .value = app.category || "";
+
+
+  document.getElementById("appVersion")
+    .value = app.version || "";
+
+
+  document.getElementById("appSize")
+    .value = app.size || "";
+
+
+  document.getElementById("iconUrl")
+    .value = app.icon_url || "";
+
+
+  document.getElementById("downloadUrl")
+    .value = app.download_url || "";
+
+
+  document.getElementById("formTitle")
+    .textContent = "Edit App";
+
+
+  document.getElementById("saveButton")
+    .textContent = "Update App";
+
+
+  document.getElementById("cancelEdit")
+    .style.display = "block";
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+/* CANCEL EDIT */
+
+function cancelEdit() {
+
+  editingId = null;
+
+
+  document
+    .getElementById("appForm")
+    .reset();
+
+
+  document.getElementById("formTitle")
+    .textContent = "Add New App";
+
+
+  document.getElementById("saveButton")
+    .textContent = "Save App";
+
+
+  document.getElementById("cancelEdit")
+    .style.display = "none";
+
+
+  document.getElementById("message")
+    .textContent = "";
+
+}
+
+
+/* DELETE APP */
+
+async function deleteApp(id) {
+
+  const confirmDelete =
+    confirm(
+      "Are you sure you want to delete this app?"
+    );
+
+
+  if (!confirmDelete) {
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("apps")
+      .delete()
+      .eq("id", id);
+
+
+  if (error) {
+
+    alert(
+      "Delete failed: " +
+      error.message
+    );
+
+    return;
+
+  }
+
+
+  alert("App deleted successfully!");
+
+
+  loadApps();
+
+}
+
+
+/* SECURITY */
 
 function escapeHtml(value) {
 
   return String(value)
+
     .replaceAll("&", "&amp;")
+
     .replaceAll("<", "&lt;")
+
     .replaceAll(">", "&gt;")
+
     .replaceAll('"', "&quot;")
+
     .replaceAll("'", "&#039;");
 
 }
 
+
+/* START */
 
 checkLogin();
 
