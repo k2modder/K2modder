@@ -2,7 +2,7 @@ const apps = [
   {
     name: "CapCut Pro",
     cat: "App",
-    version: "V1.0.0",
+    version: "1.0.0",
     size: "278 MB",
     icon: '<img src="images.jpeg" alt="CapCut Pro icon">',
     download: "https://github.com/k2modder/K2modder/releases/download/V1.0.0/CapCut.v28.0.0.ULT.A.apk"
@@ -54,12 +54,17 @@ function render(list = apps) {
 
       ${
         app.download !== "#"
-        ? `<a class="download" href="${app.download}" target="_blank" rel="noopener">
-             Download APK
-           </a>`
-        : `<a class="download" href="#" onclick="return false;">
-             Coming Soon
-           </a>`
+          ? `<a class="download"
+                href="${app.download}"
+                target="_blank"
+                rel="noopener noreferrer">
+                Download APK
+             </a>`
+          : `<a class="download"
+                href="#"
+                onclick="return false;">
+                Coming Soon
+             </a>`
       }
 
     </article>
