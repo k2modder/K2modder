@@ -37,7 +37,7 @@ function escapeHtml(value) {
 
 function createCategoryFilter() {
 
-  if (!grid) return;
+  if (!grid || !grid.parentNode) return;
 
   const oldFilter =
     document.getElementById("category-filter");
@@ -50,7 +50,9 @@ function createCategoryFilter() {
     "All",
     ...new Set(
       window.allApps
-        .map(app => String(app.category || "").trim())
+        .map(app =>
+          String(app.category || "").trim()
+        )
         .filter(Boolean)
     )
   ];
@@ -61,8 +63,8 @@ function createCategoryFilter() {
   filterBox.id = "category-filter";
   filterBox.className = "category-filter";
 
-  filterBox.innerHTML = categories
-    .map(function(category) {
+  filterBox.innerHTML =
+    categories.map(function(category) {
 
       const active =
         category === window.activeCategory
@@ -77,8 +79,8 @@ function createCategoryFilter() {
           ${escapeHtml(category)}
         </button>
       `;
-    })
-    .join("");
+
+    }).join("");
 
   grid.parentNode.insertBefore(
     filterBox,
@@ -117,19 +119,8 @@ function createCategoryFilter() {
 
 function createAppCard(app) {
 
-  const icon = app.icon_url
-    ? `
-      <img
-        src="${escapeHtml(app.icon_url)}"
-        alt="${escapeHtml(app.name)} icon"
-        loading="lazy"
-        onerror="this.style.display='none';this.parentElement.classList.add('icon-fallback');">
-    `
-    : `
-      <span class="icon-fallback">
-        📱
-      </span>
-    `;
+  const name =
+    escapeHtml(app.name || "Unnamed App");
 
   const category =
     escapeHtml(app.category || "App");
@@ -140,23 +131,57 @@ function createAppCard(app) {
   const size =
     escapeHtml(app.size || "Unknown");
 
-  const downloadButton =
-    app.download_url
-      ? `
-        <a
-          class="download"
-          href="${escapeHtml(app.download_url)}"
-          target="_blank"
-          rel="noopener noreferrer"
-          data-app-name="${escapeHtml(app.name)}">
-          Download
-        </a>
-      `
-      : `
-        <span class="download disabled">
-          Coming Soon
-        </span>
-      `;
+  let icon;
+
+  if (app.icon_url) {
+
+    icon = `
+      <img
+        src="${escapeHtml(app.icon_url)}"
+        alt="${name} icon"
+        loading="lazy"
+        onerror="
+          this.style.display='none';
+          this.parentElement.classList.add('icon-fallback');
+        "
+      >
+    `;
+
+  } else {
+
+    icon = `
+      <span class="icon-fallback">
+        📱
+      </span>
+    `;
+  }
+
+
+  let downloadButton;
+
+  if (app.download_url) {
+
+    downloadButton = `
+      <a
+        class="download"
+        href="${escapeHtml(app.download_url)}"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-app-name="${name}"
+      >
+        Download
+      </a>
+    `;
+
+  } else {
+
+    downloadButton = `
+      <span class="download disabled">
+        Coming Soon
+      </span>
+    `;
+  }
+
 
   return `
     <article class="card">
@@ -172,7 +197,7 @@ function createAppCard(app) {
         </span>
 
         <h3>
-          ${escapeHtml(app.name)}
+          ${name}
         </h3>
 
         <p>
@@ -205,8 +230,10 @@ function renderApps(apps) {
     grid.innerHTML = `
       <div class="info-box">
         <h3>No apps found</h3>
+
         <p>
-          Try another search or choose a different category.
+          Try another search or choose
+          a different category.
         </p>
       </div>
     `;
@@ -215,7 +242,9 @@ function renderApps(apps) {
   }
 
   grid.innerHTML =
-    apps.map(createAppCard).join("");
+    apps
+      .map(createAppCard)
+      .join("");
 
   setupDownloadTracking();
 }
@@ -228,7 +257,9 @@ function renderApps(apps) {
 function setupDownloadTracking() {
 
   document
-    .querySelectorAll(".download[data-app-name]")
+    .querySelectorAll(
+      ".download[data-app-name]"
+    )
     .forEach(function(button) {
 
       button.addEventListener(
@@ -243,10 +274,6 @@ function setupDownloadTracking() {
             appName
           );
 
-          /*
-            Later we can connect this
-            to a Supabase download counter.
-          */
         }
       );
     });
@@ -264,7 +291,10 @@ async function loadApps() {
   grid.innerHTML = `
     <div class="info-box">
       <h3>Loading apps...</h3>
-      <p>Please wait.</p>
+
+      <p>
+        Please wait.
+      </p>
     </div>
   `;
 
@@ -278,6 +308,7 @@ async function loadApps() {
       ascending: false
     });
 
+
   if (error) {
 
     console.error(
@@ -288,8 +319,10 @@ async function loadApps() {
     grid.innerHTML = `
       <div class="info-box">
         <h3>Unable to load apps</h3>
+
         <p>
-          Please refresh the page and try again.
+          Please refresh the page
+          and try again.
         </p>
       </div>
     `;
@@ -297,7 +330,9 @@ async function loadApps() {
     return;
   }
 
-  window.allApps = data || [];
+
+  window.allApps =
+    data || [];
 
   createCategoryFilter();
 
@@ -318,32 +353,39 @@ function filterApps() {
           .toLowerCase()
       : "";
 
+
   const filtered =
-    window.allApps.filter(function(app) {
+    window.allApps.filter(
+      function(app) {
 
-      const name =
-        String(app.name || "")
-          .toLowerCase();
+        const name =
+          String(app.name || "")
+            .toLowerCase();
 
-      const category =
-        String(app.category || "")
-          .toLowerCase();
+        const category =
+          String(app.category || "")
+            .toLowerCase();
 
-      const matchesSearch =
-        !query ||
-        name.includes(query) ||
-        category.includes(query);
 
-      const matchesCategory =
-        window.activeCategory === "All" ||
-        String(app.category || "") ===
-          window.activeCategory;
+        const matchesSearch =
+          !query ||
+          name.includes(query) ||
+          category.includes(query);
 
-      return (
-        matchesSearch &&
-        matchesCategory
-      );
-    });
+
+        const matchesCategory =
+          window.activeCategory === "All" ||
+          String(app.category || "") ===
+            window.activeCategory;
+
+
+        return (
+          matchesSearch &&
+          matchesCategory
+        );
+      }
+    );
+
 
   renderApps(filtered);
 }
