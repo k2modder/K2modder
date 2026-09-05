@@ -32,6 +32,17 @@ function escapeHtml(value) {
 
 
 /* =========================
+   NUMBER FORMAT
+========================= */
+
+function formatNumber(value) {
+  const number = Number(value || 0);
+
+  return number.toLocaleString("en-IN");
+}
+
+
+/* =========================
    CATEGORY FILTER
 ========================= */
 
@@ -131,6 +142,10 @@ function createAppCard(app) {
   const size =
     escapeHtml(app.size || "Unknown");
 
+  const downloads =
+    formatNumber(app.download_count);
+
+
   let icon;
 
   if (app.icon_url) {
@@ -167,6 +182,7 @@ function createAppCard(app) {
         href="${escapeHtml(app.download_url)}"
         target="_blank"
         rel="noopener noreferrer"
+        data-app-id="${escapeHtml(app.id)}"
         data-app-name="${name}"
       >
         Download
@@ -205,6 +221,10 @@ function createAppCard(app) {
           <span>•</span>
           ${size}
         </p>
+
+        <small class="download-count">
+          ↓ ${downloads} downloads
+        </small>
 
       </div>
 
@@ -251,26 +271,74 @@ function renderApps(apps) {
 
 
 /* =========================
-   DOWNLOAD TRACKING
+   REAL DOWNLOAD COUNTER
 ========================= */
 
 function setupDownloadTracking() {
 
   document
     .querySelectorAll(
-      ".download[data-app-name]"
+      ".download[data-app-id]"
     )
     .forEach(function(button) {
 
       button.addEventListener(
         "click",
-        function() {
+        async function() {
+
+          const appId =
+            Number(button.dataset.appId);
 
           const appName =
             button.dataset.appName;
 
+          if (!appId) return;
+
           console.log(
             "Download clicked:",
+            appName
+          );
+
+
+          const {
+            error
+          } = await supabaseClient
+            .rpc(
+              "increment_download",
+              {
+                app_id: appId
+              }
+            );
+
+
+          if (error) {
+
+            console.error(
+              "Download counter error:",
+              error
+            );
+
+            return;
+          }
+
+
+          const app =
+            window.allApps.find(
+              item =>
+                Number(item.id) === appId
+            );
+
+
+          if (app) {
+            app.download_count =
+              Number(
+                app.download_count || 0
+              ) + 1;
+          }
+
+
+          console.log(
+            "Download count updated:",
             appName
           );
 
@@ -297,6 +365,7 @@ async function loadApps() {
       </p>
     </div>
   `;
+
 
   const {
     data,
@@ -333,6 +402,7 @@ async function loadApps() {
 
   window.allApps =
     data || [];
+
 
   createCategoryFilter();
 
