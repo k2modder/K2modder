@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>K2MODDER Admin Login</title>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    .login-page{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+
+    .login-box{
+      width:100%;
+      max-width:420px;
+      background:#111a2b;
+      border:1px solid rgba(255,255,255,.09);
+      border-radius:20px;
+      padding:30px;
+      box-shadow:0 20px 60px rgba(0,0,0,.35);
+    }
+
+    .login-box h1{
+      margin:0 0 8px;
+    }
+
+    .login-box p{
+      color:#9aa7bd;
+      margin-bottom:25px;
+    }
+
+    .login-box input{
+      width:100%;
+      padding:14px;
+      margin-bottom:14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background:#0b1220;
+      color:#fff;
+      outline:none;
+    }
+
+    .login-box button{
+      width:100%;
+      padding:14px;
+      border:0;
+      border-radius:12px;
+      background:#5b8cff;
+      color:white;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    #message{
+      margin-top:15px;
+      color:#ff9b9b;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="login-page">
+    <div class="login-box">
+
+      <h1>K2MODDER Admin</h1>
+      <p>Sign in to access the admin panel.</p>
+
+      <input
+        id="email"
+        type="email"
+        placeholder="Email address"
+        autocomplete="email"
+      >
+
+      <input
+        id="password"
+        type="password"
+        placeholder="Password"
+        autocomplete="current-password"
+      >
+
+      <button onclick="login()">Login</button>
+
+      <div id="message"></div>
+
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    const SUPABASE_URL = "PASTE_YOUR_SUPABASE_URL_HERE";
+    const SUPABASE_KEY = "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+
+    async function login() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const message = document.getElementById("message");
+
+      message.textContent = "";
+
+      if (!email || !password) {
+        message.textContent = "Email and password required.";
+        return;
+      }
+
+      const { error } =
+        await supabaseClient.auth.signInWithPassword({
+          email,
+          password
+        });
+
+      if (error) {
+        message.textContent = error.message;
+        return;
+      }
+
+      window.location.href = "dashboard.html";
+    }
+  </script>
+
+</body>
+</html>
