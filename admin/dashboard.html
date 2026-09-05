@@ -146,7 +146,31 @@ async function checkLogin() {
 }
 
 function showAddApp() {
-  alert("Add App Form");
+  const name = prompt("App Name:");
+  if (!name) return;
+
+  const category = prompt("Category (App/Game/Tools):");
+  if (!category) return;
+
+  const version = prompt("Version:");
+  if (!version) return;
+
+  const size = prompt("Size (example: 100 MB):");
+  if (!size) return;
+
+  const icon_url = prompt("Icon URL:");
+  if (!icon_url) return;
+
+  const download_url = prompt("Download URL:");
+  if (!download_url) return;
+
+  alert(
+    "App details received!\n\n" +
+    "Name: " + name + "\n" +
+    "Category: " + category + "\n" +
+    "Version: " + version + "\n" +
+    "Size: " + size
+  );
 }
 async function logout() {
 
