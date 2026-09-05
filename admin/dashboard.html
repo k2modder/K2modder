@@ -68,7 +68,43 @@
 
       <button
         class="admin-btn"
-        onclick="showAddApp()"
+        onclick="showAddApp() {
+  const name = prompt("App Name:");
+  if (!name) return;
+
+  const category = prompt("Category (App/Game/Tools):");
+  if (!category) return;
+
+  const version = prompt("Version:");
+  if (!version) return;
+
+  const size = prompt("Size (example: 100 MB):");
+  if (!size) return;
+
+  const icon_url = prompt("Icon URL:");
+  if (!icon_url) return;
+
+  const download_url = prompt("Download URL:");
+  if (!download_url) return;
+
+  const { error } = await supabaseClient
+    .from("apps")
+    .insert({
+      name: name,
+      category: category,
+      version: version,
+      size: size,
+      icon_url: icon_url,
+      download_url: download_url
+    });
+
+  if (error) {
+    alert("Error: " + error.message);
+    return;
+  }
+
+  alert("App added successfully!");
+}()"
         Add App
       </button>
 
