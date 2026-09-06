@@ -1,3 +1,12 @@
+/* =========================================
+   K2MODDER - MAIN JAVASCRIPT
+========================================= */
+
+
+/* =========================================
+   APP DATA
+========================================= */
+
 const apps = [
   {
     id: 1,
@@ -13,15 +22,20 @@ const apps = [
   }
 ];
 
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
 const grid = document.getElementById("grid");
 const searchInput = document.getElementById("search");
 
 let activeCategory = "All";
 
 
-/* =========================
+/* =========================================
    SECURITY
-========================= */
+========================================= */
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -33,11 +47,12 @@ function escapeHtml(value) {
 }
 
 
-/* =========================
+/* =========================================
    APP CARD
-========================= */
+========================================= */
 
 function createAppCard(app) {
+
   const card = document.createElement("article");
 
   card.className = "app-card";
@@ -60,9 +75,7 @@ function createAppCard(app) {
 
     </div>
 
-    <h3>
-      ${escapeHtml(app.name)}
-    </h3>
+    <h3>${escapeHtml(app.name)}</h3>
 
     <div class="meta">
       ${escapeHtml(app.version)}
@@ -89,11 +102,12 @@ function createAppCard(app) {
 }
 
 
-/* =========================
+/* =========================================
    RENDER APPS
-========================= */
+========================================= */
 
 function renderApps() {
+
   if (!grid) return;
 
   const query = searchInput
@@ -105,7 +119,7 @@ function renderApps() {
     const categoryMatch =
       activeCategory === "All" ||
       app.category.toLowerCase() ===
-        activeCategory.toLowerCase();
+      activeCategory.toLowerCase();
 
     const searchMatch =
       !query ||
@@ -118,26 +132,22 @@ function renderApps() {
     return categoryMatch && searchMatch;
   });
 
+
   grid.innerHTML = "";
+
 
   if (filteredApps.length === 0) {
 
     grid.innerHTML = `
       <div class="empty-state">
-
-        <strong>
-          No apps found
-        </strong>
-
-        <span>
-          Try another search or category.
-        </span>
-
+        <strong>No apps found</strong>
+        <span>Try another search or category.</span>
       </div>
     `;
 
     return;
   }
+
 
   filteredApps.forEach((app) => {
     grid.appendChild(
@@ -147,41 +157,38 @@ function renderApps() {
 }
 
 
-/* =========================
+/* =========================================
    CATEGORY FILTER
-========================= */
+========================================= */
 
 document
   .querySelectorAll(".category")
   .forEach((button) => {
 
-    button.addEventListener(
-      "click",
-      () => {
+    button.addEventListener("click", () => {
 
-        document
-          .querySelectorAll(".category")
-          .forEach((item) => {
+      document
+        .querySelectorAll(".category")
+        .forEach((item) => {
+          item.classList.remove("active");
+        });
 
-            item.classList.remove("active");
+      button.classList.add("active");
 
-          });
+      activeCategory =
+        button.dataset.category ||
+        button.textContent.trim();
 
-        button.classList.add("active");
+      renderApps();
 
-        activeCategory =
-          button.dataset.category ||
-          button.textContent.trim();
+    });
 
-        renderApps();
-      }
-    );
   });
 
 
-/* =========================
+/* =========================================
    SEARCH
-========================= */
+========================================= */
 
 if (searchInput) {
 
@@ -189,94 +196,486 @@ if (searchInput) {
     "input",
     renderApps
   );
+
 }
 
 
-/* =========================
-   PREMIUM MOBILE MENU
-========================= */
+/* =========================================
+   MOBILE MENU
+   NEW DRAWER SYSTEM
+========================================= */
 
-const menuBtn =
-  document.querySelector(".menu-btn");
+(function setupMobileMenu() {
 
-const mobileNav =
-  document.querySelector(".mobile-nav");
+  const menuButton =
+    document.querySelector(".menu-btn");
 
-if (menuBtn && mobileNav) {
+  const oldMobileNav =
+    document.querySelector(".mobile-nav");
+
+  if (!menuButton) return;
+
+
+  /* ---------------------------------------
+     Hide old menu system
+  --------------------------------------- */
+
+  if (oldMobileNav) {
+
+    oldMobileNav.style.display = "none";
+
+    oldMobileNav.classList.remove("open");
+
+  }
+
+
+  /* ---------------------------------------
+     Prevent duplicate menu
+  --------------------------------------- */
+
+  const existingDrawer =
+    document.getElementById("k2-mobile-drawer");
+
+  if (existingDrawer) {
+    existingDrawer.remove();
+  }
+
+  const existingOverlay =
+    document.getElementById("k2-menu-overlay");
+
+  if (existingOverlay) {
+    existingOverlay.remove();
+  }
+
+
+  /* ---------------------------------------
+     Create overlay
+  --------------------------------------- */
 
   const overlay =
     document.createElement("div");
 
-  overlay.className =
-    "menu-overlay";
+  overlay.id =
+    "k2-menu-overlay";
 
-  document.body.appendChild(
-    overlay
+
+  Object.assign(overlay.style, {
+
+    position: "fixed",
+
+    inset: "0",
+
+    width: "100%",
+
+    height: "100%",
+
+    background: "rgba(0,0,0,0.65)",
+
+    backdropFilter: "blur(4px)",
+
+    WebkitBackdropFilter: "blur(4px)",
+
+    opacity: "0",
+
+    visibility: "hidden",
+
+    pointerEvents: "none",
+
+    transition: "opacity 0.28s ease",
+
+    zIndex: "9990"
+
+  });
+
+
+  document.body.appendChild(overlay);
+
+
+  /* ---------------------------------------
+     Create drawer
+  --------------------------------------- */
+
+  const drawer =
+    document.createElement("aside");
+
+  drawer.id =
+    "k2-mobile-drawer";
+
+  drawer.setAttribute(
+    "aria-hidden",
+    "true"
   );
 
 
-  /* OPEN MENU */
+  Object.assign(drawer.style, {
+
+    position: "fixed",
+
+    top: "0",
+
+    right: "0",
+
+    width: "min(320px, 84vw)",
+
+    height: "100vh",
+
+    background:
+      "linear-gradient(160deg, #0b1f3d 0%, #050d1b 100%)",
+
+    borderLeft:
+      "1px solid #287cff",
+
+    boxShadow:
+      "-20px 0 70px rgba(0,0,0,0.75)",
+
+    zIndex: "9999",
+
+    transform:
+      "translateX(105%)",
+
+    transition:
+      "transform 0.3s cubic-bezier(.4,0,.2,1)",
+
+    overflowY: "auto",
+
+    overflowX: "hidden",
+
+    padding:
+      "28px 18px 30px",
+
+    boxSizing: "border-box"
+
+  });
+
+
+  /* ---------------------------------------
+     Drawer header
+  --------------------------------------- */
+
+  const drawerHeader =
+    document.createElement("div");
+
+  Object.assign(drawerHeader.style, {
+
+    display: "flex",
+
+    alignItems: "center",
+
+    justifyContent: "space-between",
+
+    marginBottom: "28px"
+
+  });
+
+
+  const drawerTitle =
+    document.createElement("div");
+
+  drawerTitle.textContent =
+    "K2MODDER";
+
+  Object.assign(drawerTitle.style, {
+
+    color: "#ffffff",
+
+    fontSize: "21px",
+
+    fontWeight: "900",
+
+    letterSpacing: "0.5px"
+
+  });
+
+
+  const closeButton =
+    document.createElement("button");
+
+  closeButton.type = "button";
+
+  closeButton.textContent = "×";
+
+  closeButton.setAttribute(
+    "aria-label",
+    "Close menu"
+  );
+
+
+  Object.assign(closeButton.style, {
+
+    width: "42px",
+
+    height: "42px",
+
+    borderRadius: "50%",
+
+    border: "1px solid #315985",
+
+    background: "#0d2442",
+
+    color: "#ffffff",
+
+    fontSize: "29px",
+
+    lineHeight: "1",
+
+    cursor: "pointer",
+
+    display: "grid",
+
+    placeItems: "center"
+
+  });
+
+
+  drawerHeader.appendChild(
+    drawerTitle
+  );
+
+  drawerHeader.appendChild(
+    closeButton
+  );
+
+  drawer.appendChild(
+    drawerHeader
+  );
+
+
+  /* ---------------------------------------
+     Menu label
+  --------------------------------------- */
+
+  const menuLabel =
+    document.createElement("div");
+
+  menuLabel.textContent =
+    "MENU";
+
+  Object.assign(menuLabel.style, {
+
+    color: "#6eaaff",
+
+    fontSize: "11px",
+
+    fontWeight: "800",
+
+    letterSpacing: "2px",
+
+    marginBottom: "12px"
+
+  });
+
+  drawer.appendChild(menuLabel);
+
+
+  /* ---------------------------------------
+     Menu links
+  --------------------------------------- */
+
+  const links = [
+    {
+      text: "Home",
+      href: "index.html"
+    },
+    {
+      text: "Apps",
+      href: "#apps"
+    },
+    {
+      text: "Games",
+      href: "#games"
+    },
+    {
+      text: "About",
+      href: "about.html"
+    },
+    {
+      text: "Privacy",
+      href: "privacy.html"
+    },
+    {
+      text: "Contact",
+      href: "contact.html"
+    },
+    {
+      text: "Admin",
+      href: "admin/"
+    }
+  ];
+
+
+  links.forEach((item) => {
+
+    const link =
+      document.createElement("a");
+
+    link.href = item.href;
+
+    link.textContent = item.text;
+
+
+    Object.assign(link.style, {
+
+      display: "flex",
+
+      alignItems: "center",
+
+      minHeight: "54px",
+
+      width: "100%",
+
+      boxSizing: "border-box",
+
+      padding: "0 17px",
+
+      marginBottom: "10px",
+
+      borderRadius: "14px",
+
+      border: "1px solid #193b63",
+
+      background: "#081a31",
+
+      color: "#d2def0",
+
+      textDecoration: "none",
+
+      fontSize: "16px",
+
+      fontWeight: "700",
+
+      transition:
+        "background .2s ease, border-color .2s ease"
+
+    });
+
+
+    link.addEventListener(
+      "touchstart",
+      () => {
+        link.style.background =
+          "#12345e";
+
+        link.style.borderColor =
+          "#3185ff";
+      },
+      { passive: true }
+    );
+
+
+    link.addEventListener(
+      "click",
+      () => {
+        closeMenu();
+      }
+    );
+
+
+    drawer.appendChild(link);
+
+  });
+
+
+  /* ---------------------------------------
+     Add drawer
+  --------------------------------------- */
+
+  document.body.appendChild(drawer);
+
+
+  /* ---------------------------------------
+     Open menu
+  --------------------------------------- */
 
   function openMenu() {
 
-    mobileNav.classList.add("open");
+    drawer.style.transform =
+      "translateX(0)";
 
-    overlay.classList.add("show");
+    overlay.style.opacity =
+      "1";
 
-    document.body.classList.add(
-      "menu-open"
+    overlay.style.visibility =
+      "visible";
+
+    overlay.style.pointerEvents =
+      "auto";
+
+    drawer.setAttribute(
+      "aria-hidden",
+      "false"
     );
 
-    menuBtn.setAttribute(
+    menuButton.setAttribute(
       "aria-expanded",
       "true"
     );
+
+    document.body.style.overflow =
+      "hidden";
   }
 
 
-  /* CLOSE MENU */
+  /* ---------------------------------------
+     Close menu
+  --------------------------------------- */
 
   function closeMenu() {
 
-    mobileNav.classList.remove("open");
+    drawer.style.transform =
+      "translateX(105%)";
 
-    overlay.classList.remove("show");
+    overlay.style.opacity =
+      "0";
 
-    document.body.classList.remove(
-      "menu-open"
+    overlay.style.visibility =
+      "hidden";
+
+    overlay.style.pointerEvents =
+      "none";
+
+    drawer.setAttribute(
+      "aria-hidden",
+      "true"
     );
 
-    menuBtn.setAttribute(
+    menuButton.setAttribute(
       "aria-expanded",
       "false"
     );
+
+    document.body.style.overflow =
+      "";
   }
 
 
-  /* MENU BUTTON */
+  /* ---------------------------------------
+     Menu button
+  --------------------------------------- */
 
-  menuBtn.addEventListener(
+  menuButton.addEventListener(
     "click",
-    () => {
+    (event) => {
 
-      if (
-        mobileNav.classList.contains(
-          "open"
-        )
-      ) {
+      event.preventDefault();
 
+      const isOpen =
+        drawer.getAttribute(
+          "aria-hidden"
+        ) === "false";
+
+      if (isOpen) {
         closeMenu();
-
       } else {
-
         openMenu();
-
       }
+
     }
   );
 
 
-  /* OVERLAY CLICK */
+  /* ---------------------------------------
+     Overlay
+  --------------------------------------- */
 
   overlay.addEventListener(
     "click",
@@ -284,44 +683,19 @@ if (menuBtn && mobileNav) {
   );
 
 
-  /* MENU LINK CLICK */
+  /* ---------------------------------------
+     Close button
+  --------------------------------------- */
 
-  mobileNav
-    .querySelectorAll("a")
-    .forEach((link) => {
-
-      link.addEventListener(
-        "click",
-        closeMenu
-      );
-
-    });
-
-
-  /* CLOSE BUTTON */
-
-  mobileNav.addEventListener(
+  closeButton.addEventListener(
     "click",
-    (event) => {
-
-      const rect =
-        mobileNav.getBoundingClientRect();
-
-      const closeArea =
-        event.clientX >
-          rect.right - 70 &&
-        event.clientY <
-          rect.top + 70;
-
-      if (closeArea) {
-        closeMenu();
-      }
-
-    }
+    closeMenu
   );
 
 
-  /* ESC KEY */
+  /* ---------------------------------------
+     ESC
+  --------------------------------------- */
 
   document.addEventListener(
     "keydown",
@@ -329,7 +703,9 @@ if (menuBtn && mobileNav) {
 
       if (
         event.key === "Escape" &&
-        mobileNav.classList.contains("open")
+        drawer.getAttribute(
+          "aria-hidden"
+        ) === "false"
       ) {
 
         closeMenu();
@@ -338,12 +714,14 @@ if (menuBtn && mobileNav) {
 
     }
   );
-}
 
 
-/* =========================
+})();
+
+
+/* =========================================
    DOWNLOAD TRACKING
-========================= */
+========================================= */
 
 document.addEventListener(
   "click",
@@ -373,13 +751,14 @@ document.addEventListener(
       );
 
     }
+
   }
 );
 
 
-/* =========================
+/* =========================================
    THEME BUTTON
-========================= */
+========================================= */
 
 const themeButton =
   document.querySelector(".icon-btn");
@@ -400,13 +779,15 @@ if (themeButton) {
         )
           ? "☀️"
           : "☾";
+
     }
   );
+
 }
 
 
-/* =========================
+/* =========================================
    INITIAL LOAD
-========================= */
+========================================= */
 
 renderApps();
