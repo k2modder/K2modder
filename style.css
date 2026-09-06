@@ -1375,3 +1375,25 @@ footer {
   }
 }
  
+/* =========================
+   MOBILE MENU FINAL FIX
+========================= */
+
+@media (max-width: 700px) {
+
+  .site-header {
+    z-index: 50 !important;
+  }
+
+  .mobile-nav {
+    z-index: 60 !important;
+  }
+
+  .menu-overlay {
+    z-index: 40 !important;
+  }
+
+  .mobile-nav.open {
+    z-index: 60 !important;
+  }
+}
