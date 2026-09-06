@@ -1,279 +1,300 @@
-/* =====================================================
-   K2MODDER PREMIUM RESPONSIVE CSS
-   MOBILE + DESKTOP
-===================================================== */
+/* =========================================================
+   K2MODDER — MOBILE FIRST PREMIUM CSS
+   FIXED: NO HORIZONTAL SLIDE / NO SIDEWAYS ZOOM
+========================================================= */
 
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html {
   width: 100%;
   max-width: 100%;
+  margin: 0;
+  padding: 0;
   overflow-x: hidden;
-  scroll-behavior: smooth;
 }
 
 body {
   width: 100%;
   max-width: 100%;
   min-width: 0;
+  margin: 0;
+  padding: 0;
   overflow-x: hidden;
-  background: #020914;
+  background: #030916;
   color: #f4f7ff;
   font-family: Arial, Helvetica, sans-serif;
-  line-height: 1.5;
 }
 
-img {
+/* Prevent every section from becoming wider than screen */
+
+header,
+main,
+section,
+footer,
+nav,
+div {
   max-width: 100%;
-  height: auto;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-button,
-input {
-  font: inherit;
-}
-
-/* =====================================================
-   MAIN WIDTH
-===================================================== */
-
-.container {
-  width: min(1180px, calc(100% - 32px));
-  max-width: 1180px;
-  margin: 0 auto;
-}
-
-/* =====================================================
+/* =========================================================
    HEADER
-===================================================== */
+========================================================= */
 
 .site-header {
   width: 100%;
   max-width: 100%;
-  background: rgba(2, 9, 20, 0.96);
-  border-bottom: 1px solid #11264a;
-  position: relative;
-  z-index: 100;
+  overflow: hidden;
+  background: rgba(3, 9, 22, 0.96);
+  border-bottom: 1px solid rgba(50, 110, 220, 0.25);
 }
 
 .header-inner {
-  width: min(1180px, calc(100% - 32px));
+  width: 100%;
   max-width: 1180px;
-  min-height: 82px;
   margin: 0 auto;
+  padding: 14px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
+  gap: 12px;
 }
+
+/* Logo */
 
 .brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
   min-width: 0;
+  flex: 1;
 }
 
-.brand-name {
-  font-size: 27px;
+.brand h1,
+.brand-logo {
+  margin: 0;
+  font-size: 25px;
   font-weight: 800;
-  letter-spacing: -1.2px;
+  letter-spacing: -1px;
   white-space: nowrap;
 }
 
-.brand-name span {
-  color: #398cff;
+.brand span {
+  color: #277dff;
 }
 
-.brand-sub {
+.brand small {
   display: block;
-  color: #6e84a8;
-  font-size: 10px;
+  margin-top: 3px;
+  color: #7184a7;
+  font-size: 9px;
   letter-spacing: 2px;
-  margin-top: 2px;
 }
+
+/* Header buttons */
 
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .icon-btn,
 .admin-btn,
 .menu-btn {
-  border: 1px solid #2457a0;
-  background: #07162c;
-  color: #fff;
-  cursor: pointer;
+  flex-shrink: 0;
 }
 
 .icon-btn {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  font-size: 25px;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  background: transparent;
+  color: #dce7ff;
+  font-size: 28px;
+  cursor: pointer;
 }
 
 .admin-btn {
-  min-height: 46px;
-  padding: 0 20px;
+  min-height: 42px;
+  padding: 0 18px;
   border-radius: 24px;
+  border: 1px solid #267cff;
+  background: rgba(18, 52, 110, 0.45);
+  color: white;
+  font-size: 16px;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .menu-btn {
-  display: none;
-  width: 44px;
-  height: 44px;
+  display: block;
+  width: 42px;
+  height: 42px;
   border: 0;
   background: transparent;
-  font-size: 28px;
+  color: #dce7ff;
+  font-size: 27px;
+  cursor: pointer;
 }
 
-/* =====================================================
+/* =========================================================
    DESKTOP NAV
-===================================================== */
+========================================================= */
 
 .desktop-nav {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+.desktop-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.desktop-nav-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 8px 16px 12px;
   display: flex;
-  align-items: center;
   gap: 10px;
 }
 
 .desktop-nav a {
-  padding: 10px 17px;
-  border: 1px solid #17365f;
+  flex: 0 0 auto;
+  text-decoration: none;
+  color: #9db0d1;
+  border: 1px solid #18345f;
   border-radius: 24px;
-  color: #aebed8;
+  padding: 10px 20px;
 }
 
-.desktop-nav a:hover {
-  color: #fff;
-  border-color: #327ff0;
+/* =========================================================
+   MAIN
+========================================================= */
+
+main {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 18px 16px 50px;
+  overflow: hidden;
 }
 
-/* =====================================================
-   MOBILE NAV
-===================================================== */
-
-.mobile-nav {
-  display: none;
-}
-
-.menu-overlay {
-  display: none;
-}
-
-/* =====================================================
+/* =========================================================
    HERO
-===================================================== */
+========================================================= */
 
 .hero {
   width: 100%;
   max-width: 100%;
-  margin: 34px auto 42px;
-  padding: 58px;
-  border: 1px solid #1d4e91;
-  border-radius: 30px;
-  background:
-    radial-gradient(circle at 80% 80%, rgba(71, 57, 255, .30), transparent 40%),
-    linear-gradient(135deg, #06152b, #071225 60%, #101b57);
-  overflow: hidden;
+  margin: 0 auto 28px;
 }
 
 .hero-copy {
   width: 100%;
-  max-width: 780px;
+  max-width: 100%;
+  min-width: 0;
+  padding: 28px 24px;
+  border: 1px solid #21457e;
+  border-radius: 24px;
+  background:
+    radial-gradient(
+      circle at 80% 100%,
+      rgba(48, 54, 255, 0.28),
+      transparent 45%
+    ),
+    linear-gradient(
+      145deg,
+      #061426,
+      #07122d
+    );
+  overflow: hidden;
+}
+
+.hero-copy h2 {
+  margin: 0 0 14px;
+  font-size: clamp(38px, 8vw, 72px);
+  line-height: 0.95;
+  word-break: break-word;
 }
 
 .hero-copy .eyebrow {
-  color: #5da5ff;
-  font-size: 16px;
+  margin-bottom: 12px;
+  color: #5fa9ff;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 3px;
-  margin-bottom: 12px;
-}
-
-.hero-copy h1 {
-  font-size: clamp(48px, 8vw, 88px);
-  line-height: .95;
-  letter-spacing: -4px;
-  margin-bottom: 25px;
 }
 
 .hero-copy p {
-  max-width: 720px;
-  color: #b7c7e2;
-  font-size: 21px;
-  margin-bottom: 32px;
+  max-width: 700px;
+  margin: 0 0 24px;
+  color: #b2c1dd;
+  font-size: 18px;
+  line-height: 1.6;
 }
 
-/* =====================================================
+/* =========================================================
    SEARCH
-===================================================== */
+========================================================= */
 
 .search-box {
   width: 100%;
-  max-width: 760px;
+  max-width: 100%;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   padding: 7px;
-  border: 1px solid #3188ff;
-  border-radius: 50px;
-  background: #06152b;
+  border: 1px solid #2580ff;
+  border-radius: 40px;
+  background: #061328;
 }
 
 .search-box input {
-  flex: 1;
   min-width: 0;
   width: 100%;
+  flex: 1;
   border: 0;
   outline: 0;
   background: transparent;
-  color: #fff;
-  padding: 15px 18px;
-  font-size: 18px;
+  color: white;
+  font-size: 16px;
+  padding: 12px 14px;
 }
 
 .search-box input::placeholder {
-  color: #7186aa;
+  color: #7286aa;
 }
 
 .search-box button {
-  flex: 0 0 auto;
+  flex-shrink: 0;
   border: 0;
-  border-radius: 40px;
-  padding: 14px 26px;
-  color: #fff;
+  border-radius: 30px;
+  padding: 13px 22px;
+  background: linear-gradient(
+    90deg,
+    #1683ff,
+    #6034ff
+  );
+  color: white;
   font-weight: 700;
-  background: linear-gradient(90deg, #2388ff, #5736ff);
-  cursor: pointer;
+  font-size: 16px;
 }
 
-/* =====================================================
+/* =========================================================
    CATEGORIES
-===================================================== */
+========================================================= */
 
 .categories {
   width: 100%;
   max-width: 100%;
   display: flex;
-  gap: 12px;
-  margin-top: 22px;
+  gap: 10px;
+  margin-top: 18px;
   overflow-x: auto;
   overflow-y: hidden;
-  padding-bottom: 5px;
+  padding-bottom: 4px;
   scrollbar-width: none;
 }
 
@@ -283,461 +304,505 @@ input {
 
 .category {
   flex: 0 0 auto;
-  border: 1px solid #1d477b;
-  border-radius: 28px;
-  padding: 12px 22px;
-  background: #07172c;
-  color: #aebed8;
-  cursor: pointer;
   white-space: nowrap;
+  border: 1px solid #183c70;
+  border-radius: 30px;
+  padding: 10px 17px;
+  background: #061426;
+  color: #a9bad7;
+  cursor: pointer;
 }
 
-.category.active,
-.category:hover {
-  color: #fff;
-  border-color: #416eff;
-  background: linear-gradient(90deg, #277eff, #5439ff);
+.category.active {
+  background: linear-gradient(
+    90deg,
+    #287cff,
+    #5b35ff
+  );
+  border-color: transparent;
+  color: white;
 }
 
-/* =====================================================
-   SECTION
-===================================================== */
+/* =========================================================
+   SECTION HEAD
+========================================================= */
 
 .section {
   width: 100%;
   max-width: 100%;
-  margin-bottom: 55px;
+  margin-top: 34px;
 }
 
-.section-heading {
+.section-head {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 15px;
-  margin-bottom: 24px;
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
-.section-heading h2 {
-  font-size: 32px;
-  line-height: 1.1;
+.section-head h2 {
+  margin: 0;
+  font-size: clamp(25px, 6vw, 38px);
 }
 
-.section-heading a {
-  color: #4c94ff;
+.section-head a {
+  flex-shrink: 0;
+  color: #4d91ff;
+  text-decoration: none;
   font-weight: 700;
-  white-space: nowrap;
 }
 
-/* =====================================================
+/* =========================================================
    APP GRID
-===================================================== */
+========================================================= */
 
-.app-grid {
+#grid {
   width: 100%;
   max-width: 100%;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(230px, 1fr)
+  );
+  gap: 18px;
 }
 
-/* =====================================================
+/* =========================================================
    APP CARD
-===================================================== */
+========================================================= */
 
 .app-card {
-  min-width: 0;
   width: 100%;
-  padding: 22px;
-  border: 1px solid #173d6b;
-  border-radius: 22px;
-  background: linear-gradient(145deg, #07192f, #04101f);
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid #173861;
+  border-radius: 20px;
+  background:
+    linear-gradient(
+      145deg,
+      #07172a,
+      #061223
+    );
   overflow: hidden;
-}
-
-.app-card:hover {
-  border-color: #367ff0;
-  transform: translateY(-3px);
-  transition: .2s ease;
 }
 
 .app-top {
   width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
+  justify-content: space-between;
   gap: 10px;
 }
 
 .app-icon {
-  width: 86px;
-  height: 86px;
+  width: 78px;
+  height: 78px;
+  max-width: 78px;
   object-fit: cover;
-  border-radius: 20px;
-  background: #fff;
+  border-radius: 18px;
+  display: block;
 }
 
 .badge {
-  background: #08bd8b;
-  color: #fff;
-  padding: 7px 12px;
+  flex-shrink: 0;
+  padding: 8px 11px;
   border-radius: 15px;
-  font-size: 12px;
-  font-weight: 700;
+  background: #08bf91;
+  color: white;
+  font-size: 11px;
+  font-weight: 800;
 }
 
 .app-card h3 {
-  font-size: 21px;
-  margin-top: 20px;
-  margin-bottom: 5px;
+  margin: 18px 0 7px;
+  font-size: 20px;
 }
 
 .meta {
-  color: #8296b6;
-  font-size: 14px;
+  color: #8095b9;
+  font-size: 13px;
 }
 
 .tag {
   display: inline-block;
-  margin-top: 14px;
-  padding: 7px 12px;
-  border-radius: 20px;
-  background: #182b5d;
-  color: #b8c9ee;
-  font-size: 13px;
+  margin-top: 13px;
+  padding: 7px 11px;
+  border-radius: 15px;
+  background: #18275c;
+  color: #a9bce2;
+  font-size: 12px;
 }
 
 .download-btn {
   display: block;
   width: 100%;
-  margin-top: 20px;
-  padding: 13px 16px;
+  margin-top: 18px;
+  padding: 13px 15px;
   border-radius: 30px;
+  background: linear-gradient(
+    90deg,
+    #1683ff,
+    #6132ff
+  );
+  color: white;
   text-align: center;
+  text-decoration: none;
   font-weight: 700;
-  color: #fff;
-  background: linear-gradient(90deg, #2388ff, #5736ff);
 }
 
-/* =====================================================
+/* =========================================================
    EMPTY STATE
-===================================================== */
+========================================================= */
 
 .empty-state {
   width: 100%;
-  padding: 30px;
-  border: 1px dashed #214878;
+  padding: 30px 20px;
+  border: 1px solid #173861;
   border-radius: 20px;
-  color: #91a5c5;
+  text-align: center;
+  color: #8da0c1;
 }
 
 .empty-state strong {
   display: block;
-  color: #fff;
-  margin-bottom: 5px;
+  color: white;
+  margin-bottom: 8px;
 }
 
-/* =====================================================
+/* =========================================================
    GAMES
-===================================================== */
+========================================================= */
 
-.games-card {
+.games-box {
   width: 100%;
   max-width: 100%;
-  padding: 28px;
-  border: 1px solid #173d6b;
-  border-radius: 22px;
-  background: #07192f;
-  display: flex;
-  align-items: center;
-  gap: 20px;
+  padding: 22px;
+  border: 1px solid #173861;
+  border-radius: 20px;
+  background: linear-gradient(
+    145deg,
+    #081b32,
+    #071326
+  );
 }
 
-.games-icon {
-  width: 62px;
-  height: 62px;
-  border-radius: 18px;
-  display: grid;
-  place-items: center;
-  background: #102b5c;
-  font-size: 30px;
+.games-box h3 {
+  margin: 0 0 7px;
+  font-size: 20px;
 }
 
-.games-card h3 {
-  font-size: 21px;
+.games-box p {
+  margin: 0;
+  color: #8ea2c5;
+  line-height: 1.5;
 }
 
-.games-card p {
-  color: #879ab8;
-}
-
-/* =====================================================
+/* =========================================================
    FOOTER
-===================================================== */
+========================================================= */
 
-.site-footer {
+footer {
   width: 100%;
   max-width: 100%;
-  border-top: 1px solid #102442;
-  padding: 45px 0 25px;
-  background: #030b17;
+  border-top: 1px solid #102746;
+  background: #020815;
 }
 
 .footer-inner {
-  width: min(1180px, calc(100% - 32px));
+  width: 100%;
   max-width: 1180px;
   margin: 0 auto;
+  padding: 30px 16px;
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+}
+
+.footer-inner a {
+  color: #8498bb;
+  text-decoration: none;
 }
 
 .footer-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 18px;
-  margin: 20px 0;
+  gap: 15px;
 }
 
-.footer-links a {
-  color: #8295b5;
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(0, 0, 0, 0.68);
+  backdrop-filter: blur(5px);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.2s;
 }
 
-.footer-bottom {
-  border-top: 1px solid #0f223c;
-  padding-top: 20px;
-  color: #61738f;
-  font-size: 13px;
+.menu-overlay.show {
+  opacity: 1;
+  visibility: visible;
 }
 
-/* =====================================================
-   MOBILE
-===================================================== */
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 9999;
 
-@media (max-width: 768px) {
+  width: min(320px, 88vw);
+  height: 100vh;
 
-  html,
-  body {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden !important;
-  }
+  padding: 22px 16px;
 
-  .container,
-  .header-inner,
-  .footer-inner {
-    width: calc(100% - 22px);
-    max-width: calc(100% - 22px);
-    margin-left: auto;
-    margin-right: auto;
-  }
+  background: #07172d;
+  border-left: 1px solid #23508d;
 
-  /* HEADER */
+  transform: translateX(105%);
+  transition: transform 0.25s ease;
+
+  overflow-y: auto;
+}
+
+.mobile-nav.open {
+  transform: translateX(0);
+}
+
+.mobile-nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.mobile-nav-header strong {
+  font-size: 19px;
+}
+
+.mobile-nav-close {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #315886;
+  background: #0b203b;
+  color: white;
+  font-size: 20px;
+}
+
+.mobile-nav a {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 14px 16px;
+
+  border: 1px solid #193b66;
+  border-radius: 14px;
+
+  color: #c8d6ed;
+  text-decoration: none;
+  background: #081a32;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (min-width: 600px) {
 
   .header-inner {
-    min-height: 70px;
-    gap: 6px;
+    padding-left: 22px;
+    padding-right: 22px;
   }
 
-  .menu-btn {
-    display: block;
-    flex: 0 0 40px;
-  }
-
-  .brand {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .brand-name {
-    font-size: 20px;
-    letter-spacing: -.8px;
-  }
-
-  .brand-sub {
-    font-size: 7px;
-    letter-spacing: 1.2px;
-  }
-
-  .header-actions {
-    gap: 5px;
-  }
-
-  .icon-btn {
-    width: 38px;
-    height: 38px;
-    font-size: 21px;
-  }
-
-  .admin-btn {
-    min-height: 38px;
-    padding: 0 12px;
-    font-size: 13px;
-  }
-
-  .desktop-nav {
-    display: none;
-  }
-
-  /* MOBILE DRAWER */
-
-  .mobile-nav {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: min(310px, 82vw);
-    height: 100vh;
-    display: block;
-    padding: 24px 18px;
-    background: #071a33;
-    border-left: 1px solid #2c68b7;
-    transform: translateX(105%);
-    transition: transform .25s ease;
-    z-index: 1002;
-    box-shadow: -15px 0 40px rgba(0,0,0,.45);
-  }
-
-  .mobile-nav.open {
-    transform: translateX(0);
-  }
-
-  .mobile-nav-title {
-    font-size: 20px;
-    font-weight: 800;
-    margin-bottom: 24px;
-  }
-
-  .mobile-nav a {
-    display: block;
-    width: 100%;
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    border: 1px solid #193b66;
-    border-radius: 14px;
-    color: #c5d3e9;
-    background: #081c36;
-  }
-
-  .menu-overlay {
-    position: fixed;
-    inset: 0;
-    display: block;
-    background: rgba(0,0,0,.65);
-    backdrop-filter: blur(5px);
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: .2s ease;
-    z-index: 1001;
-  }
-
-  .menu-overlay.show {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-  }
-
-  body.menu-open {
-    overflow: hidden !important;
-  }
-
-  /* HERO */
-
-  .hero {
-    width: 100%;
-    max-width: 100%;
-    margin-top: 18px;
-    margin-bottom: 32px;
-    padding: 32px 20px 22px;
-    border-radius: 22px;
+  main {
+    padding-left: 22px;
+    padding-right: 22px;
   }
 
   .hero-copy {
-    width: 100%;
-    max-width: 100%;
+    padding: 40px;
   }
 
-  .hero-copy .eyebrow {
-    font-size: 13px;
-    letter-spacing: 2px;
+  #grid {
+    grid-template-columns: repeat(
+      2,
+      minmax(0, 1fr)
+    );
   }
 
-  .hero-copy h1 {
-    font-size: 44px;
-    letter-spacing: -2.5px;
-    word-break: normal;
+}
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+@media (min-width: 900px) {
+
+  .menu-btn {
+    display: none;
+  }
+
+  .hero-copy {
+    padding: 55px;
+  }
+
+  #grid {
+    grid-template-columns: repeat(
+      3,
+      minmax(0, 1fr)
+    );
+  }
+
+}
+
+/* =========================================================
+   SMALL PHONE — IMPORTANT FIX
+========================================================= */
+
+@media (max-width: 599px) {
+
+  body {
+    font-size: 14px;
+  }
+
+  .header-inner {
+    padding: 10px 12px;
+  }
+
+  .brand h1,
+  .brand-logo {
+    font-size: 21px;
+  }
+
+  .brand small {
+    font-size: 7px;
+    letter-spacing: 1.5px;
+  }
+
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 24px;
+  }
+
+  .admin-btn {
+    padding: 0 13px;
+    font-size: 14px;
+  }
+
+  main {
+    padding: 12px 10px 40px;
+  }
+
+  .hero-copy {
+    padding: 25px 18px;
+    border-radius: 20px;
+  }
+
+  .hero-copy h2 {
+    font-size: 42px;
   }
 
   .hero-copy p {
     font-size: 15px;
-    line-height: 1.55;
-    margin-bottom: 22px;
+    line-height: 1.5;
   }
 
-  /* SEARCH */
-
   .search-box {
-    width: 100%;
-    max-width: 100%;
     padding: 5px;
   }
 
   .search-box input {
-    min-width: 0;
-    padding: 12px 10px;
     font-size: 14px;
+    padding: 10px 8px;
   }
 
   .search-box button {
-    padding: 12px 17px;
+    padding: 11px 15px;
     font-size: 14px;
   }
 
-  /* CATEGORIES */
-
   .categories {
-    width: 100%;
-    max-width: 100%;
-    gap: 8px;
-    margin-top: 17px;
+    margin-right: 0;
   }
 
   .category {
-    padding: 10px 15px;
+    padding: 9px 14px;
     font-size: 13px;
   }
 
-  /* SECTION */
-
-  .section {
-    width: 100%;
-    max-width: 100%;
-    margin-bottom: 38px;
+  #grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
   }
-
-  .section-heading {
-    margin-bottom: 17px;
-  }
-
-  .section-heading h2 {
-    font-size: 24px;
-  }
-
-  .section-heading a {
-    font-size: 14px;
-  }
-
-  /* APP GRID */
-
-  .app-grid {
-    width: 100%;
-    max-width: 100%;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-  }
-
-  /* APP CARD */
 
   .app-card {
-    width: 100%;
     max-width: 100%;
-    padding: 12px;
-    border-radius: 16px;
   }
+
+  .section-head h2 {
+    font-size: 27px;
+  }
+
+  .section-head a {
+    font-size: 13px;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    padding: 25px 14px;
+  }
+
+}
+
+/* =========================================================
+   EXTRA SMALL PHONE
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .header-inner {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .brand h1,
+  .brand-logo {
+    font-size: 18px;
+  }
+
+  .admin-btn {
+    padding: 0 10px;
+    font-size: 13px;
+  }
+
+  main {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .hero-copy {
+    padding: 22px 14px;
+  }
+
+  .hero-copy h2 {
+    font-size: 35px;
+  }
+
+  .search-box button {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+}
