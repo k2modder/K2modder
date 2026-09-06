@@ -1,381 +1,343 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
+  <meta charset="UTF-8">
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-
-  <!-- Favicon -->
-  <link rel="icon" href="favicon.png">
-
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHPEPP0P24"></script>
-
-  <script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag(){
-      dataLayer.push(arguments);
-    }
-
-    gtag('js', new Date());
-    gtag('config', 'G-ZHPEPP0P24');
-  </script>
-
-
-  <!-- Google AdSense -->
-  <script async
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9722524325055696"
-    crossorigin="anonymous"></script>
-
-
-  <title>K2MODDER - Apps & Games</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+  >
 
   <meta
     name="description"
     content="K2MODDER - Discover apps, games and digital tools."
   >
 
-  <meta
-    name="theme-color"
-    content="#07101f"
-  >
+  <meta name="theme-color" content="#030914">
+
+  <title>K2MODDER - Apps & Games</title>
+
+  <link rel="icon" href="favicon.png">
+
+  <!-- Google Analytics -->
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-ZHPEPP0P24">
+  </script>
+
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag("js", new Date());
+
+    gtag("config", "G-ZHPEPP0P24");
+  </script>
+
+
+  <!-- Google AdSense -->
+  <script
+    async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9722524325055696"
+    crossorigin="anonymous">
+  </script>
+
 
   <link rel="stylesheet" href="style.css">
-
 </head>
 
 
 <body>
 
 
-  <!-- =========================
-       HEADER
-  ========================== -->
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
-  <header class="site-header">
+<header class="site-header">
 
-    <div class="header-inner">
+  <div class="header-inner">
+
+    <button
+      class="menu-btn"
+      aria-label="Open menu"
+      aria-expanded="false"
+    >
+      ☰
+    </button>
 
 
-      <!-- Mobile Menu -->
+    <a href="index.html" class="brand">
+
+      <span class="brand-name">
+        K2MODDER
+      </span>
+
+      <span class="brand-sub">
+        MOD APPS · GAMES · MORE
+      </span>
+
+    </a>
+
+
+    <div class="header-actions">
 
       <button
-        class="menu-btn"
-        id="menuBtn"
-        type="button"
-        aria-label="Open menu"
+        class="icon-btn search-toggle"
+        aria-label="Search"
       >
-        ☰
+        🔍
       </button>
 
 
-      <!-- Logo -->
+      <button
+        class="icon-btn theme-btn"
+        aria-label="Theme"
+      >
+        ☾
+      </button>
+
 
       <a
-        class="brand"
-        href="index.html"
-        aria-label="K2MODDER Home"
+        href="admin/"
+        class="admin-btn"
       >
-
-        <span class="brand-main">
-          <b>K2</b>MODDER
-        </span>
-
-        <small>
-          MOD APPS · GAMES · MORE
-        </small>
-
+        ♙ Admin
       </a>
-
-
-      <!-- Header Actions -->
-
-      <div class="header-actions">
-
-
-        <button
-          class="icon-btn"
-          id="topSearchBtn"
-          type="button"
-          aria-label="Search"
-        >
-          ⌕
-        </button>
-
-
-        <button
-          class="icon-btn"
-          id="themeBtn"
-          type="button"
-          aria-label="Toggle theme"
-        >
-          ☾
-        </button>
-
-
-        <a
-          class="admin-btn"
-          href="admin/index.html"
-        >
-          ♙
-          <span>Admin</span>
-        </a>
-
-
-      </div>
 
     </div>
 
+  </div>
 
-    <!-- Mobile Navigation -->
-
-    <nav
-      class="mobile-nav"
-      id="mobileNav"
-    >
-
-      <a href="index.html">
-        Home
-      </a>
-
-      <a href="#apps">
-        Apps
-      </a>
-
-      <a href="#games">
-        Games
-      </a>
-
-      <a href="about.html">
-        About
-      </a>
-
-      <a href="privacy.html">
-        Privacy
-      </a>
-
-      <a href="contact.html">
-        Contact
-      </a>
-
-    </nav>
-
-  </header>
+</header>
 
 
 
-  <!-- =========================
+<!-- =====================================================
+     MOBILE MENU
+===================================================== -->
+
+<nav class="mobile-nav">
+
+  <div class="mobile-nav-head">
+
+    <strong>K2MODDER</strong>
+
+    <button class="mobile-close">
+      ×
+    </button>
+
+  </div>
+
+
+  <small>MENU</small>
+
+  <a href="index.html">
+    Home
+  </a>
+
+  <a href="#apps">
+    Apps
+  </a>
+
+  <a href="#games">
+    Games
+  </a>
+
+  <a href="about.html">
+    About
+  </a>
+
+  <a href="privacy.html">
+    Privacy
+  </a>
+
+  <a href="contact.html">
+    Contact
+  </a>
+
+  <a href="admin/">
+    Admin
+  </a>
+
+</nav>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main>
+
+
+  <!-- ===================================================
        HERO
-  ========================== -->
+  =================================================== -->
 
-  <main>
+  <section class="hero">
 
+    <div class="container">
 
-    <section class="hero">
-
-
-      <div class="hero-copy">
+      <div class="hero-box">
 
 
-        <p class="eyebrow">
-          WELCOME TO
-        </p>
+        <div class="hero-copy">
+
+          <div class="hero-label">
+            WELCOME TO
+          </div>
 
 
-        <h1>
-          <span>K2</span>MODDER
-        </h1>
+          <h1>
+            K2<span>MODDER</span>
+          </h1>
 
 
-        <p class="hero-text">
-          Discover apps, tools and games
-          in one clean place.
-          Fast, simple and mobile-friendly.
-        </p>
+          <p>
+            Discover apps, tools and games in one
+            clean place. Fast, simple and
+            mobile-friendly.
+          </p>
 
 
-        <!-- Search -->
+          <!-- SEARCH -->
 
-        <div
-          class="search-box"
-          id="searchBox"
-        >
-
-          <span class="search-icon">
-            ⌕
-          </span>
-
-
-          <input
-            id="search"
-            type="search"
-            placeholder="Search apps or games..."
-            autocomplete="off"
+          <form
+            class="search-box"
+            id="searchForm"
           >
 
-
-          <button
-            id="searchBtn"
-            type="button"
-          >
-            Search
-          </button>
-
-        </div>
+            <span class="search-icon">
+              ⌕
+            </span>
 
 
-        <!-- Categories -->
-
-        <div
-          class="categories"
-          id="categories"
-        >
-
-
-          <button
-            class="category active"
-            data-category="All"
-            type="button"
-          >
-            All
-          </button>
+            <input
+              type="search"
+              id="search"
+              placeholder="Search apps or games..."
+              autocomplete="off"
+              aria-label="Search apps or games"
+            >
 
 
-          <button
-            class="category"
-            data-category="App"
-            type="button"
-          >
-            ▦ Apps
-          </button>
+            <button
+              type="submit"
+              class="search-btn"
+            >
+              Search
+            </button>
+
+          </form>
 
 
-          <button
-            class="category"
-            data-category="Game"
-            type="button"
-          >
-            🎮 Games
-          </button>
+          <!-- CATEGORIES -->
+
+          <div class="categories">
+
+            <button
+              class="category active"
+              data-category="All"
+            >
+              ▦ All
+            </button>
 
 
-          <button
-            class="category"
-            data-category="Tools"
-            type="button"
-          >
-            🛠 Tools
-          </button>
+            <button
+              class="category"
+              data-category="App"
+            >
+              ▦ Apps
+            </button>
 
 
-          <button
-            class="category"
-            data-category="Social"
-            type="button"
-          >
-            ● Social
-          </button>
+            <button
+              class="category"
+              data-category="Games"
+            >
+              🎮 Games
+            </button>
 
 
-          <button
-            class="category"
-            data-category="Entertainment"
-            type="button"
-          >
-            ▶ Entertainment
-          </button>
+            <button
+              class="category"
+              data-category="Tools"
+            >
+              🛠 Tools
+            </button>
 
 
-        </div>
+            <button
+              class="category"
+              data-category="Mods"
+            >
+              ▱ Mods
+            </button>
 
-      </div>
-
-
-
-      <!-- Hero Illustration -->
-
-      <div
-        class="hero-art"
-        aria-hidden="true"
-      >
-
-        <div class="glow"></div>
-
-
-        <div class="phone">
-
-          <div class="phone-notch"></div>
-
-          <div class="phone-logo">
-            K2
           </div>
 
         </div>
 
 
-        <div class="hero-word">
-          MOD<br>
-          YOUR<br>
-          WORLD
-        </div>
+        <!-- HERO DECORATION -->
 
+        <div class="hero-art">
+
+          <div class="hero-glow"></div>
+
+          <div class="hero-phone">
+
+            <div class="mini-screen">
+              K2
+            </div>
+
+          </div>
+
+        </div>
 
       </div>
 
+    </div>
 
-    </section>
-
-
-
-    <!-- =========================
-         LATEST APPS
-    ========================== -->
-
-    <section
-      class="section"
-      id="apps"
-    >
+  </section>
 
 
-      <div class="section-heading">
+
+  <!-- ===================================================
+       LATEST APPS
+  =================================================== -->
+
+  <section
+    class="section"
+    id="apps"
+  >
+
+    <div class="container">
 
 
-        <div>
+      <div class="section-header">
 
-          <span class="section-kicker">
-            🔥
-          </span>
-
-          <h2>
-            Latest Apps
-          </h2>
-
-        </div>
+        <h2 class="section-title">
+          🔥 Latest Apps
+        </h2>
 
 
-        <button
+        <a
+          href="#apps"
           class="view-all"
-          id="viewAllApps"
-          type="button"
         >
           View All →
-        </button>
-
+        </a>
 
       </div>
 
 
-      <!-- Apps will appear here -->
+      <div id="grid"></div>
 
-      <div
-        id="grid"
-        class="app-grid"
-      ></div>
-
-
-      <!-- No Results -->
 
       <div
         id="emptyState"
@@ -393,54 +355,46 @@
 
       </div>
 
+    </div>
 
-    </section>
-
-
-
-    <!-- =========================
-         GAMES
-    ========================== -->
-
-    <section
-      class="section games-section"
-      id="games"
-    >
+  </section>
 
 
-      <div class="section-heading">
+
+  <!-- ===================================================
+       GAMES
+  =================================================== -->
+
+  <section
+    class="section games-section"
+    id="games"
+  >
+
+    <div class="container">
 
 
-        <div>
+      <div class="section-header">
 
-          <span class="section-kicker">
-            🎮
-          </span>
-
-          <h2>
-            Games
-          </h2>
-
-        </div>
+        <h2 class="section-title">
+          🎮 Games
+        </h2>
 
 
-        <span class="coming-label">
+        <span class="coming-soon">
           COMING SOON
         </span>
-
 
       </div>
 
 
-      <div class="games-placeholder">
+      <div class="games-box">
 
-
-        <div class="game-orb">
+        <div class="games-icon">
           🎮
         </div>
 
 
-        <div>
+        <div class="games-content">
 
           <h3>
             Games are coming soon
@@ -454,67 +408,73 @@
         </div>
 
 
+        <div class="games-arrow">
+          →
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+  <div class="container">
+
+    <div class="footer-top">
+
+
+      <div class="footer-brand">
+
+        <div class="footer-logo">
+          K2<span>MODDER</span>
+        </div>
+
+        <p>
+          Mod Apps · Games · More
+        </p>
+
       </div>
 
 
-    </section>
+      <div class="footer-links">
 
+        <a href="index.html">
+          Home
+        </a>
 
-  </main>
+        <a href="#apps">
+          Apps
+        </a>
 
+        <a href="#games">
+          Games
+        </a>
 
+        <a href="about.html">
+          About
+        </a>
 
-  <!-- =========================
-       FOOTER
-  ========================== -->
+        <a href="privacy.html">
+          Privacy
+        </a>
 
-  <footer>
+        <a href="contact.html">
+          Contact
+        </a>
 
-
-    <div class="footer-brand">
-
-      <strong>
-        K2<span>MODDER</span>
-      </strong>
-
-      <small>
-        Mod Apps · Games · More
-      </small>
-
-    </div>
-
-
-
-    <div class="footer-links">
-
-
-      <a href="index.html">
-        Home
-      </a>
-
-
-      <a href="#apps">
-        Apps
-      </a>
-
-
-      <a href="#games">
-        Games
-      </a>
-
-
-      <a href="about.html">
-        About
-      </a>
-
-
-      <a href="contact.html">
-        Contact
-      </a>
-
+      </div>
 
     </div>
-
 
 
     <div class="footer-social">
@@ -522,36 +482,87 @@
       <a
         href="https://t.me/k2modder"
         target="_blank"
-        rel="noopener"
+        rel="noopener noreferrer"
         aria-label="Telegram"
       >
-        ✈
+        ➜
       </a>
 
     </div>
 
 
-
-    <p class="copyright">
+    <div class="footer-bottom">
 
       © 2026 K2MODDER.
       Only distribute apps you own
       or have permission to distribute.
 
-    </p>
+    </div>
+
+  </div>
+
+</footer>
 
 
-  </footer>
+
+<!-- =====================================================
+     BOTTOM NAVIGATION — MOBILE
+===================================================== -->
+
+<nav class="bottom-nav">
+
+  <a
+    href="index.html"
+    class="bottom-item active"
+  >
+
+    <span>⌂</span>
+
+    <small>Home</small>
+
+  </a>
+
+
+  <a
+    href="#apps"
+    class="bottom-item"
+  >
+
+    <span>▦</span>
+
+    <small>Apps</small>
+
+  </a>
+
+
+  <a
+    href="#games"
+    class="bottom-item"
+  >
+
+    <span>🎮</span>
+
+    <small>Games</small>
+
+  </a>
+
+
+  <a
+    href="about.html"
+    class="bottom-item"
+  >
+
+    <span>♙</span>
+
+    <small>About</small>
+
+  </a>
+
+</nav>
 
 
 
-  <!-- =========================
-       WEBSITE SCRIPT
-  ========================== -->
-
-  <script src="script.js"></script>
-
+<script src="script.js"></script>
 
 </body>
-
 </html>
