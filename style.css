@@ -590,3 +590,67 @@ img {
     font-size: 23px;
   }
 }
+/* =========================
+   MOBILE HORIZONTAL SCROLL FIX
+========================= */
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img,
+video,
+iframe {
+  max-width: 100%;
+}
+
+.container,
+.site-header,
+.hero,
+.latest,
+.games,
+.site-footer {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+
+  body {
+    overflow-x: hidden !important;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hero {
+    width: calc(100% - 32px);
+    max-width: calc(100% - 32px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-copy {
+    max-width: 100%;
+  }
+
+  .latest,
+  .games,
+  .site-footer {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .app-grid {
+    width: 100%;
+    max-width: 100%;
+  }
+}
