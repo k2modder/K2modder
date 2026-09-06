@@ -1,44 +1,112 @@
-const SUPABASE_URL =
-  "https://mcjsihyrkzrkvkufvkif.supabase.co";
-
-const SUPABASE_KEY =
-  "sb_publishable_rJ3XzXGztJJcf5c_wUG9FA_lZAsqlvf";
-
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+const apps = [
+  {
+    id: 1,
+    name: "CapCut Pro",
+    category: "App",
+    tag: "Video Editor",
+    version: "1.0.0",
+    size: "278 MB",
+    icon: "images.jpeg",
+    downloadUrl:
+      "https://github.com/k2modder/K2modder/releases/download/V1.0.0/CapCut.v28.0.0.ULT.A.apk",
+    isNew: true
+  }
+];
 
 const grid = document.getElementById("grid");
-const search = document.getElementById("search");
+const searchInput = document.getElementById("search");
 
-window.allApps = [];
-window.activeCategory = "All";
-
-
-/* =========================
-   SECURITY
-========================= */
+let activeCategory = "All";
 
 function escapeHtml(value) {
   return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
+function createAppCard(app) {
+  const card = document.createElement("article");
+  card.className = "app-card";
 
-/* =========================
-   NUMBER FORMAT
-========================= */
+  card.innerHTML = `
+    <div class="app-top">
+      <img
+        class="app-icon"
+        src="${escapeHtml(app.icon)}"
+        alt="${escapeHtml(app.name)} icon"
+        loading="lazy"
+      >
 
-function formatNumber(value) {
-  const number = Number(value || 0);
+      ${
+        app.isNew
+          ? `<span class="badge">NEW</span>`
+          : ""
+      }
+    </div>
 
-  return number.toLocaleString("en-IN");
+    <h3>${escapeHtml(app.name)}</h3>
+
+    <div class="meta">
+      ${escapeHtml(app.version)} • ${escapeHtml(app.size)}
+    </div>
+
+    <span class="tag">
+      ${escapeHtml(app.tag || app.category)}
+    </span>
+
+    <a
+      class="download-btn"
+      href="${escapeHtml(app.downloadUrl)}"
+      target="_blank"
+      rel="noopener noreferrer"
+      data-app-name="${escapeHtml(app.name)}"
+    >
+      Download
+    </a>
+  `;
+
+  return card;
+}
+
+function renderApps() {
+  if (!grid) return;
+
+  const query = searchInput
+    ? searchInput.value.trim().toLowerCase()
+    : "";
+
+  const filteredApps = apps.filter((app) => {
+    const categoryMatch =
+      activeCategory === "All" ||
+      app.category.toLowerCase() === activeCategory.toLowerCase();
+
+    const searchMatch =
+      !query ||
+      app.name.toLowerCase().includes(query) ||
+      app.category.toLowerCase().includes(query) ||
+      (app.tag || "").toLowerCase().includes(query);
+
+    return categoryMatch && searchMatch;
+  });
+
+  grid.innerHTML = "";
+
+  if (filteredApps.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <strong>No apps found</strong>
+        <span>Try another search or category.</span>
+      </div>
+    `;
+    return;
+  }
+
+  filteredApps.forEach((app) => {
+    grid.appendChild(createAppCard(app));
+  });
 }
 
 
@@ -46,436 +114,88 @@ function formatNumber(value) {
    CATEGORY FILTER
 ========================= */
 
-function createCategoryFilter() {
+document.querySelectorAll(".category").forEach((button) => {
+  button.addEventListener("click", () => {
+    document
+      .querySelectorAll(".category")
+      .forEach((item) => item.classList.remove("active"));
 
-  if (!grid || !grid.parentNode) return;
+    button.classList.add("active");
 
-  const oldFilter =
-    document.getElementById("category-filter");
+    activeCategory =
+      button.dataset.category ||
+      button.textContent.trim();
 
-  if (oldFilter) {
-    oldFilter.remove();
-  }
+    renderApps();
+  });
+});
 
-  const categories = [
-    "All",
-    ...new Set(
-      window.allApps
-        .map(app =>
-          String(app.category || "").trim()
-        )
-        .filter(Boolean)
-    )
-  ];
 
-  const filterBox =
-    document.createElement("div");
+/* =========================
+   SEARCH
+========================= */
 
-  filterBox.id = "category-filter";
-  filterBox.className = "category-filter";
+if (searchInput) {
+  searchInput.addEventListener("input", renderApps);
+}
 
-  filterBox.innerHTML =
-    categories.map(function(category) {
 
-      const active =
-        category === window.activeCategory
-          ? "active"
-          : "";
+/* =========================
+   MOBILE MENU
+========================= */
 
-      return `
-        <button
-          type="button"
-          class="category-btn ${active}"
-          data-category="${escapeHtml(category)}">
-          ${escapeHtml(category)}
-        </button>
-      `;
+const menuBtn = document.querySelector(".menu-btn");
+const mobileNav = document.querySelector(".mobile-nav");
 
-    }).join("");
+if (menuBtn && mobileNav) {
+  menuBtn.addEventListener("click", () => {
+    mobileNav.classList.toggle("open");
+  });
+}
 
-  grid.parentNode.insertBefore(
-    filterBox,
-    grid
-  );
 
-  filterBox
-    .querySelectorAll(".category-btn")
-    .forEach(function(button) {
+/* =========================
+   DOWNLOAD TRACKING
+========================= */
 
-      button.addEventListener(
-        "click",
-        function() {
+document.addEventListener("click", (event) => {
+  const downloadButton =
+    event.target.closest(".download-btn");
 
-          window.activeCategory =
-            button.dataset.category;
+  if (!downloadButton) return;
 
-          filterBox
-            .querySelectorAll(".category-btn")
-            .forEach(function(btn) {
-              btn.classList.remove("active");
-            });
+  const appName =
+    downloadButton.dataset.appName || "Unknown";
 
-          button.classList.add("active");
-
-          filterApps();
-        }
-      );
+  if (typeof gtag === "function") {
+    gtag("event", "download_click", {
+      app_name: appName
     });
-}
-
-
-/* =========================
-   APP CARD
-========================= */
-
-function createAppCard(app) {
-
-  const name =
-    escapeHtml(app.name || "Unnamed App");
-
-  const category =
-    escapeHtml(app.category || "App");
-
-  const version =
-    escapeHtml(app.version || "N/A");
-
-  const size =
-    escapeHtml(app.size || "Unknown");
-
-  const downloads =
-    formatNumber(app.download_count);
-
-
-  let icon;
-
-  if (app.icon_url) {
-
-    icon = `
-      <img
-        src="${escapeHtml(app.icon_url)}"
-        alt="${name} icon"
-        loading="lazy"
-        onerror="
-          this.style.display='none';
-          this.parentElement.classList.add('icon-fallback');
-        "
-      >
-    `;
-
-  } else {
-
-    icon = `
-      <span class="icon-fallback">
-        📱
-      </span>
-    `;
   }
+});
 
 
-  let downloadButton;
+/* =========================
+   THEME BUTTON
+========================= */
 
-  if (app.download_url) {
+const themeButton =
+  document.querySelector(".icon-btn");
 
-    downloadButton = `
-      <a
-        class="download"
-        href="${escapeHtml(app.download_url)}"
-        target="_blank"
-        rel="noopener noreferrer"
-        data-app-id="${escapeHtml(app.id)}"
-        data-app-name="${name}"
-      >
-        Download
-      </a>
-    `;
+if (themeButton) {
+  themeButton.addEventListener("click", () => {
+    document.body.classList.toggle("soft-mode");
 
-  } else {
-
-    downloadButton = `
-      <span class="download disabled">
-        Coming Soon
-      </span>
-    `;
-  }
-
-
-  return `
-    <article class="card">
-
-      <div class="icon">
-        ${icon}
-      </div>
-
-      <div class="info">
-
-        <span class="app-category">
-          ${category}
-        </span>
-
-        <h3>
-          ${name}
-        </h3>
-
-        <p>
-          Version ${version}
-          <span>•</span>
-          ${size}
-        </p>
-
-        <small class="download-count">
-          ↓ ${downloads} downloads
-        </small>
-
-      </div>
-
-      <div class="card-action">
-        ${downloadButton}
-      </div>
-
-    </article>
-  `;
+    themeButton.textContent =
+      document.body.classList.contains("soft-mode")
+        ? "☀️"
+        : "☾";
+  });
 }
 
 
 /* =========================
-   RENDER APPS
+   INITIAL LOAD
 ========================= */
 
-function renderApps(apps) {
-
-  if (!grid) return;
-
-  if (!apps || apps.length === 0) {
-
-    grid.innerHTML = `
-      <div class="info-box">
-        <h3>No apps found</h3>
-
-        <p>
-          Try another search or choose
-          a different category.
-        </p>
-      </div>
-    `;
-
-    return;
-  }
-
-  grid.innerHTML =
-    apps
-      .map(createAppCard)
-      .join("");
-
-  setupDownloadTracking();
-}
-
-
-/* =========================
-   REAL DOWNLOAD COUNTER
-========================= */
-
-function setupDownloadTracking() {
-
-  document
-    .querySelectorAll(
-      ".download[data-app-id]"
-    )
-    .forEach(function(button) {
-
-      button.addEventListener(
-        "click",
-        async function() {
-
-          const appId =
-            Number(button.dataset.appId);
-
-          const appName =
-            button.dataset.appName;
-
-          if (!appId) return;
-
-          console.log(
-            "Download clicked:",
-            appName
-          );
-
-
-          const {
-            error
-          } = await supabaseClient
-            .rpc(
-              "increment_download",
-              {
-                app_id: appId
-              }
-            );
-
-
-          if (error) {
-
-            console.error(
-              "Download counter error:",
-              error
-            );
-
-            return;
-          }
-
-
-          const app =
-            window.allApps.find(
-              item =>
-                Number(item.id) === appId
-            );
-
-
-          if (app) {
-            app.download_count =
-              Number(
-                app.download_count || 0
-              ) + 1;
-          }
-
-
-          console.log(
-            "Download count updated:",
-            appName
-          );
-
-        }
-      );
-    });
-}
-
-
-/* =========================
-   LOAD APPS
-========================= */
-
-async function loadApps() {
-
-  if (!grid) return;
-
-  grid.innerHTML = `
-    <div class="info-box">
-      <h3>Loading apps...</h3>
-
-      <p>
-        Please wait.
-      </p>
-    </div>
-  `;
-
-
-  const {
-    data,
-    error
-  } = await supabaseClient
-    .from("apps")
-    .select("*")
-    .order("created_at", {
-      ascending: false
-    });
-
-
-  if (error) {
-
-    console.error(
-      "Supabase error:",
-      error
-    );
-
-    grid.innerHTML = `
-      <div class="info-box">
-        <h3>Unable to load apps</h3>
-
-        <p>
-          Please refresh the page
-          and try again.
-        </p>
-      </div>
-    `;
-
-    return;
-  }
-
-
-  window.allApps =
-    data || [];
-
-
-  createCategoryFilter();
-
-  filterApps();
-}
-
-
-/* =========================
-   SEARCH + FILTER
-========================= */
-
-function filterApps() {
-
-  const query =
-    search
-      ? search.value
-          .trim()
-          .toLowerCase()
-      : "";
-
-
-  const filtered =
-    window.allApps.filter(
-      function(app) {
-
-        const name =
-          String(app.name || "")
-            .toLowerCase();
-
-        const category =
-          String(app.category || "")
-            .toLowerCase();
-
-
-        const matchesSearch =
-          !query ||
-          name.includes(query) ||
-          category.includes(query);
-
-
-        const matchesCategory =
-          window.activeCategory === "All" ||
-          String(app.category || "") ===
-            window.activeCategory;
-
-
-        return (
-          matchesSearch &&
-          matchesCategory
-        );
-      }
-    );
-
-
-  renderApps(filtered);
-}
-
-
-/* =========================
-   SEARCH EVENTS
-========================= */
-
-if (search) {
-
-  search.addEventListener(
-    "input",
-    filterApps
-  );
-}
-
-
-/* =========================
-   START
-========================= */
-
-loadApps();
+renderApps();
