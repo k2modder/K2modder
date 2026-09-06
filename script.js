@@ -124,7 +124,13 @@ function renderApps() {
   grid.innerHTML = "";
 
   if (emptyState) {
-    emptyState.hidden = filteredApps.length !== 0;
+  if (filteredApps.length === 0) {
+    emptyState.hidden = false;
+    emptyState.style.display = "flex";
+  } else {
+    emptyState.hidden = true;
+    emptyState.style.display = "none";
+  }
   }
 
   if (filteredApps.length === 0) {
