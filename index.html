@@ -6,10 +6,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
+  <!-- Favicon -->
   <link rel="icon" href="favicon.png">
 
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHPEPP0P24"></script>
+
   <script>
     window.dataLayer = window.dataLayer || [];
 
@@ -35,6 +37,11 @@
     content="K2MODDER - Discover apps, games and digital tools."
   >
 
+  <meta
+    name="theme-color"
+    content="#07101f"
+  >
+
   <link rel="stylesheet" href="style.css">
 
 </head>
@@ -47,14 +54,87 @@
        HEADER
   ========================== -->
 
-  <header>
+  <header class="site-header">
 
-    <div class="logo">
-      K2<span>MODDER</span>
+    <div class="header-inner">
+
+
+      <!-- Mobile Menu -->
+
+      <button
+        class="menu-btn"
+        id="menuBtn"
+        type="button"
+        aria-label="Open menu"
+      >
+        ☰
+      </button>
+
+
+      <!-- Logo -->
+
+      <a
+        class="brand"
+        href="index.html"
+        aria-label="K2MODDER Home"
+      >
+
+        <span class="brand-main">
+          <b>K2</b>MODDER
+        </span>
+
+        <small>
+          MOD APPS · GAMES · MORE
+        </small>
+
+      </a>
+
+
+      <!-- Header Actions -->
+
+      <div class="header-actions">
+
+
+        <button
+          class="icon-btn"
+          id="topSearchBtn"
+          type="button"
+          aria-label="Search"
+        >
+          ⌕
+        </button>
+
+
+        <button
+          class="icon-btn"
+          id="themeBtn"
+          type="button"
+          aria-label="Toggle theme"
+        >
+          ☾
+        </button>
+
+
+        <a
+          class="admin-btn"
+          href="admin/index.html"
+        >
+          ♙
+          <span>Admin</span>
+        </a>
+
+
+      </div>
+
     </div>
 
 
-    <nav>
+    <!-- Mobile Navigation -->
+
+    <nav
+      class="mobile-nav"
+      id="mobileNav"
+    >
 
       <a href="index.html">
         Home
@@ -80,10 +160,6 @@
         Contact
       </a>
 
-      <a href="admin/index.html">
-        Admin
-      </a>
-
     </nav>
 
   </header>
@@ -94,68 +170,123 @@
        HERO
   ========================== -->
 
-  <section class="hero">
-
-    <p class="tag">
-      APK & APP DOWNLOAD
-    </p>
+  <main>
 
 
-    <h1>
-      Discover
-      <span>Apps & Games</span>
-    </h1>
+    <section class="hero">
 
 
-    <p>
-      Browse your app collection with a clean,
-      fast and mobile-friendly design.
-    </p>
+      <div class="hero-copy">
 
 
-    <div class="search">
-
-      <input
-        id="search"
-        type="search"
-        placeholder="Search apps or games..."
-      >
+        <p class="eyebrow">
+          WELCOME TO
+        </p>
 
 
-      <button type="button">
-        Search
-      </button>
-
-    </div>
-
-  </section>
+        <h1>
+          <span>K2</span>MODDER
+        </h1>
 
 
-
-  <!-- =========================
-       REAL STATS
-  ========================== -->
-
-  <section class="stats-section">
-
-    <div class="stats-grid">
+        <p class="hero-text">
+          Discover apps, tools and games
+          in one clean place.
+          Fast, simple and mobile-friendly.
+        </p>
 
 
-      <div class="stat-card">
+        <!-- Search -->
 
-        <div class="stat-icon">
-          📱
-        </div>
+        <div
+          class="search-box"
+          id="searchBox"
+        >
 
-        <div>
-
-          <span>
-            Total Apps
+          <span class="search-icon">
+            ⌕
           </span>
 
-          <strong id="total-apps">
-            0
-          </strong>
+
+          <input
+            id="search"
+            type="search"
+            placeholder="Search apps or games..."
+            autocomplete="off"
+          >
+
+
+          <button
+            id="searchBtn"
+            type="button"
+          >
+            Search
+          </button>
+
+        </div>
+
+
+        <!-- Categories -->
+
+        <div
+          class="categories"
+          id="categories"
+        >
+
+
+          <button
+            class="category active"
+            data-category="All"
+            type="button"
+          >
+            All
+          </button>
+
+
+          <button
+            class="category"
+            data-category="App"
+            type="button"
+          >
+            ▦ Apps
+          </button>
+
+
+          <button
+            class="category"
+            data-category="Game"
+            type="button"
+          >
+            🎮 Games
+          </button>
+
+
+          <button
+            class="category"
+            data-category="Tools"
+            type="button"
+          >
+            🛠 Tools
+          </button>
+
+
+          <button
+            class="category"
+            data-category="Social"
+            type="button"
+          >
+            ● Social
+          </button>
+
+
+          <button
+            class="category"
+            data-category="Entertainment"
+            type="button"
+          >
+            ▶ Entertainment
+          </button>
+
 
         </div>
 
@@ -163,133 +294,173 @@
 
 
 
-      <div class="stat-card">
+      <!-- Hero Illustration -->
 
-        <div class="stat-icon">
+      <div
+        class="hero-art"
+        aria-hidden="true"
+      >
+
+        <div class="glow"></div>
+
+
+        <div class="phone">
+
+          <div class="phone-notch"></div>
+
+          <div class="phone-logo">
+            K2
+          </div>
+
+        </div>
+
+
+        <div class="hero-word">
+          MOD<br>
+          YOUR<br>
+          WORLD
+        </div>
+
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- =========================
+         LATEST APPS
+    ========================== -->
+
+    <section
+      class="section"
+      id="apps"
+    >
+
+
+      <div class="section-heading">
+
+
+        <div>
+
+          <span class="section-kicker">
+            🔥
+          </span>
+
+          <h2>
+            Latest Apps
+          </h2>
+
+        </div>
+
+
+        <button
+          class="view-all"
+          id="viewAllApps"
+          type="button"
+        >
+          View All →
+        </button>
+
+
+      </div>
+
+
+      <!-- Apps will appear here -->
+
+      <div
+        id="grid"
+        class="app-grid"
+      ></div>
+
+
+      <!-- No Results -->
+
+      <div
+        id="emptyState"
+        class="empty-state"
+        hidden
+      >
+
+        <strong>
+          No apps found
+        </strong>
+
+        <span>
+          Try another search or category.
+        </span>
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- =========================
+         GAMES
+    ========================== -->
+
+    <section
+      class="section games-section"
+      id="games"
+    >
+
+
+      <div class="section-heading">
+
+
+        <div>
+
+          <span class="section-kicker">
+            🎮
+          </span>
+
+          <h2>
+            Games
+          </h2>
+
+        </div>
+
+
+        <span class="coming-label">
+          COMING SOON
+        </span>
+
+
+      </div>
+
+
+      <div class="games-placeholder">
+
+
+        <div class="game-orb">
           🎮
         </div>
 
+
         <div>
 
-          <span>
-            Total Games
-          </span>
+          <h3>
+            Games are coming soon
+          </h3>
 
-          <strong id="total-games">
-            0
-          </strong>
+          <p>
+            New games will appear here
+            when they are ready.
+          </p>
 
         </div>
+
 
       </div>
 
 
-
-      <div class="stat-card">
-
-        <div class="stat-icon">
-          ⬇️
-        </div>
-
-        <div>
-
-          <span>
-            Total Downloads
-          </span>
-
-          <strong id="total-downloads">
-            0
-          </strong>
-
-        </div>
-
-      </div>
-
-
-
-      <div class="stat-card">
-
-        <div class="stat-icon">
-          🏷️
-        </div>
-
-        <div>
-
-          <span>
-            Categories
-          </span>
-
-          <strong id="total-categories">
-            0
-          </strong>
-
-        </div>
-
-      </div>
-
-
-    </div>
-
-  </section>
-
-
-
-  <!-- =========================
-       APPS
-  ========================== -->
-
-  <main id="apps">
-
-
-    <div class="section-title">
-
-      <h2>
-        Latest Apps
-      </h2>
-
-
-      <span>
-        Updated regularly
-      </span>
-
-    </div>
-
-
-    <div id="grid" class="grid"></div>
+    </section>
 
 
   </main>
-
-
-
-  <!-- =========================
-       GAMES
-  ========================== -->
-
-  <section
-    id="games"
-    class="games-section"
-  >
-
-    <div class="games-box">
-
-      <span class="small-title">
-        COMING SOON
-      </span>
-
-
-      <h2>
-        Games
-      </h2>
-
-
-      <p>
-        New games will be added here soon.
-      </p>
-
-    </div>
-
-  </section>
 
 
 
@@ -300,33 +471,73 @@
   <footer>
 
 
-    <div class="footer-logo">
-      K2<span>MODDER</span>
+    <div class="footer-brand">
+
+      <strong>
+        K2<span>MODDER</span>
+      </strong>
+
+      <small>
+        Mod Apps · Games · More
+      </small>
+
     </div>
 
 
+
     <div class="footer-links">
+
+
+      <a href="index.html">
+        Home
+      </a>
+
+
+      <a href="#apps">
+        Apps
+      </a>
+
+
+      <a href="#games">
+        Games
+      </a>
+
 
       <a href="about.html">
         About
       </a>
 
 
-      <a href="privacy.html">
-        Privacy Policy
+      <a href="contact.html">
+        Contact
       </a>
 
 
-      <a href="contact.html">
-        Contact Us
+    </div>
+
+
+
+    <div class="footer-social">
+
+      <a
+        href="https://t.me/k2modder"
+        target="_blank"
+        rel="noopener"
+        aria-label="Telegram"
+      >
+        ✈
       </a>
 
     </div>
 
 
-    <p>
-      © 2026 K2MODDER · Only distribute apps you own
+
+    <p class="copyright">
+
+      © 2026 K2MODDER.
+      Only distribute apps you own
       or have permission to distribute.
+
     </p>
 
 
@@ -335,180 +546,10 @@
 
 
   <!-- =========================
-       SUPABASE
+       WEBSITE SCRIPT
   ========================== -->
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
-  <!-- Website Script -->
 
   <script src="script.js"></script>
-
-
-
-  <!-- =========================
-       REAL STATS SCRIPT
-  ========================== -->
-
-  <script>
-
-    async function loadRealStats() {
-
-      try {
-
-        const {
-          data,
-          error
-        } = await supabaseClient
-          .from("apps")
-          .select(
-            "category, download_count"
-          );
-
-
-        if (error) {
-
-          console.error(
-            "Stats error:",
-            error
-          );
-
-          return;
-        }
-
-
-        const apps =
-          data || [];
-
-
-        /* Total apps */
-
-        const totalApps =
-          apps.filter(function(app) {
-
-            return String(
-              app.category || ""
-            ).toLowerCase() !== "game";
-
-          }).length;
-
-
-        /* Total games */
-
-        const totalGames =
-          apps.filter(function(app) {
-
-            return String(
-              app.category || ""
-            ).toLowerCase() === "game";
-
-          }).length;
-
-
-        /* Total downloads */
-
-        const totalDownloads =
-          apps.reduce(
-            function(total, app) {
-
-              return total +
-                Number(
-                  app.download_count || 0
-                );
-
-            },
-            0
-          );
-
-
-        /* Categories */
-
-        const categories =
-          new Set(
-            apps
-              .map(function(app) {
-
-                return String(
-                  app.category || ""
-                ).trim().toLowerCase();
-
-              })
-              .filter(Boolean)
-          );
-
-
-        /* Update UI */
-
-        const totalAppsElement =
-          document.getElementById(
-            "total-apps"
-          );
-
-        const totalGamesElement =
-          document.getElementById(
-            "total-games"
-          );
-
-        const totalDownloadsElement =
-          document.getElementById(
-            "total-downloads"
-          );
-
-        const totalCategoriesElement =
-          document.getElementById(
-            "total-categories"
-          );
-
-
-        if (totalAppsElement) {
-
-          totalAppsElement.textContent =
-            totalApps.toLocaleString("en-IN");
-
-        }
-
-
-        if (totalGamesElement) {
-
-          totalGamesElement.textContent =
-            totalGames.toLocaleString("en-IN");
-
-        }
-
-
-        if (totalDownloadsElement) {
-
-          totalDownloadsElement.textContent =
-            totalDownloads.toLocaleString("en-IN");
-
-        }
-
-
-        if (totalCategoriesElement) {
-
-          totalCategoriesElement.textContent =
-            categories.size.toLocaleString("en-IN");
-
-        }
-
-      }
-
-      catch (error) {
-
-        console.error(
-          "Unable to load stats:",
-          error
-        );
-
-      }
-
-    }
-
-
-    loadRealStats();
-
-  </script>
 
 
 </body>
